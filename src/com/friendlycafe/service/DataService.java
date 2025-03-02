@@ -3,7 +3,8 @@
  * Last Modified By : prasanths
  */
 package com.friendlycafe.service;
-
+import java.util.Map;
+import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +12,8 @@ import org.slf4j.LoggerFactory;
  * Write logic to read the file and store it
  */
 public class DataService {
-	
+	Map<String, Map<String,String>> customers = new HashMap<>();
+
     private static final Logger serviceLogger = LoggerFactory.getLogger(DataService.class);
 
 	// CODE FUNCTIONALLY STARTING AREA
@@ -21,7 +23,10 @@ public class DataService {
 	
 		serviceLogger.info("I take care of reading  the data");
 	}
-		
+	
+	public String generateOrderID() {
+		return null;
+	}
 	//EXECUTES WHEN APPLICATION IS GOING TO EXIT
 	public void generateReport() {
 		
