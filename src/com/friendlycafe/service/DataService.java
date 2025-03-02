@@ -1,0 +1,30 @@
+/**
+ * Author 			: prasanths 
+ * Last Modified By : prasanths
+ */
+package com.friendlycafe.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Write logic to read the file and store it
+ */
+public class DataService {
+	
+    private static final Logger serviceLogger = LoggerFactory.getLogger(DataService.class);
+
+	// CODE FUNCTIONALLY STARTING AREA
+	// logic to read data from file
+	// use report folder in /assets/report
+	public void ReadData() {
+	
+		serviceLogger.info("I take care of reading  the data");
+	}
+		
+	//EXECUTES WHEN APPLICATION IS GOING TO EXIT
+	public void generateReport() {
+		
+		serviceLogger.info("I take care of generating the report");
+	}
+}
