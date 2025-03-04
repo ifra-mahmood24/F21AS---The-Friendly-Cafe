@@ -1,0 +1,15 @@
+{
+  "customers" : [ {
+    "mailId" : "prasanthshanmugam1402@gmail.com",
+    "name" : "Prasanth",
+    "isVIP" : false
+  }, {
+    "mailId" : "asd@asd.com",
+    "name" : "asd",
+    "isVIP" : false
+  }, {
+    "mailId" : "aaa@aaa.com",
+    "name" : "aaa",
+    "isVIP" : false
+  } ]
+}

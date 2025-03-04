@@ -4,9 +4,15 @@
  */
 package com.friendlycafe.app;
 
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.friendlycafe.pojo.Customer;
+import com.friendlycafe.pojo.Item;
 import com.friendlycafe.service.DataService;
 
 /**
@@ -18,16 +24,30 @@ public class FriendlyCafe {
 
 	public static void main(String[] args) {
 		
-		DataService service = new DataService();
 		appLogger.info(" Application Started... ");
 
-		// Read the data from file
-		service.ReadData();
+		DataService service = new DataService();
+		ArrayList<Item> menu = service.getMenu();
 		
-		// Process it
-		appLogger.info(" Processing... ");
+		for(Item item : menu) {
+			appLogger.info("Item Name : "+item.name);
+		}
+
 		
-		// Writ the report and exit the application
-		service.generateReport();
+		// GET THE BELOW TWO VALUES FROM GUI
+		HashMap<String, Integer> orderingItem = new HashMap<>();
+		orderingItem.put(menu.get(0).itemId, 4);
+		orderingItem.put(menu.get(2).itemId, 4);
+		
+		Customer customer = new Customer("aaa", "dsa@gmail.com");
+		// GET THE ABOVE customer and orderingItems TWO VALUES FROM GUI
+		
+		if(!service.checkCustomer(customer.mailId))
+			service.saveCustomerDetails("aaa", "aaa@aaa.com");
+		
+		service.saveOrder(customer.mailId, orderingItem);
+	
+		
+//		service.generateReport();
 	}
 }

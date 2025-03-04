@@ -14,6 +14,29 @@ public class Item {
 	public float cost;
 	
 	
+	/**
+	 * @param itemId
+	 * @param name
+	 * @param description
+	 * @param cost
+	 */
+	public Item(String itemId, String name, String description, float cost) {
+		super();
+		this.itemId = itemId;
+		this.name = name;
+		this.description = description;
+		this.cost = cost;
+	}
+
+	
+	/**
+	 * 
+	 */
+	public Item() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public boolean addItem(String name, float cost){
 		return true;
 	}
@@ -23,8 +46,8 @@ public class Item {
 	}
 	
 	public Item getItem(String itemId) {
-		Item item = new Item();
-		return item;
+		// use itemId to find the particular item
+		return new Item();
 	}
 	
 	public boolean deleteItem(String itemId) {

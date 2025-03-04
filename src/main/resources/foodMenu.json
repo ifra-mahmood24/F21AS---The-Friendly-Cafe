@@ -1,0 +1,16 @@
+{
+	"foodItems":[
+					{
+						"itemId" : "F001",
+						"name" : "Veg cheese Burger",
+						"description" : "burger with cheese and vegetables",
+						"cost" : "2.99"
+					},
+					{
+						"itemId" : "F002",
+						"name" : "Veg Cheese Sandwich",
+						"description" : "Sandwich  with Cheese and vegetable",
+						"cost" : "2.29"
+					}
+				]
+}

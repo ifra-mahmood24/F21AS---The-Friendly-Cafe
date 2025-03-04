@@ -4,6 +4,7 @@
  */
 package com.friendlycafe.pojo;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,15 +13,33 @@ import java.util.Map;
 public class Order {
 	public String orderId;
 	public String customerId;
-	public Map<Item, Integer> orderedItems;
+	public HashMap<String, Integer> orderedItems;
 	
-	public boolean placeOrder(Map<Item, Integer> orderItems) {
+	/**
+	 * @param orderId2
+	 * @param string
+	 * @param orderDetail
+	 */
+	public Order(String orderId, String customerMailId, HashMap<String, Integer> orderedItems) {
+		// TODO Auto-generated constructor stub
+		this.orderId = orderId;
+		this.customerId = customerMailId;
+		this.orderedItems = orderedItems;
+	}
+
+	/**
+	 * 
+	 */
+	public Order() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public boolean placeOrder(Map<String, Integer> orderItems) {
 		return true;
 	}
 	
 	public Order retriveOrder(String orderId) {
-		Order order = new Order();
-		return order;
+		return null;
 	}
 	
 	public int getOrderCountForaCustomer(String orderId) {
