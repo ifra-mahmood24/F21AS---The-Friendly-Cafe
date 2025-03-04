@@ -19,8 +19,14 @@ public class DataService {
 	// CODE FUNCTIONALLY STARTING AREA
 	// logic to read data from file
 	// use report folder in /assets/report
-	public void ReadData() {
-	
+	public void ReadData(Map<String, Map<String, Integer>> orderMap) {
+		String customerEmail = orderMap.keySet().iterator().next();
+		for (Map.Entry<String, Map<String, Integer>> entry : orderMap.entrySet()) {
+			serviceLogger.info("entry {}",entry);
+
+		}
+		String customer = customerEmail.substring(0,customerEmail.lastIndexOf('@'));
+		serviceLogger.info("customer email {}", customer);
 		serviceLogger.info("I take care of reading  the data");
 	}
 	

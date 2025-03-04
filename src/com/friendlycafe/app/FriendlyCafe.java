@@ -35,7 +35,7 @@ public class FriendlyCafe {
 		order.put("customer0@gmail.com",items);
 		
 		// Read the data from file
-		service.ReadData();
+		service.ReadData(order);
 
 		// Process it
 		appLogger.info(" Processing... ");
