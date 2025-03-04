@@ -10,21 +10,36 @@ package com.friendlycafe.pojo;
 public class Beverage extends Item {
 	
 	 
-	public tempType type;
-	public drinkSize size;
+	public TempType type;
+	public DrinkSize size;
 	public boolean isRefill;
 	
-	protected enum tempType {
+	public enum TempType {
 			COLD,
 			HOT
 		}
 	
-	protected enum drinkSize {
+	public enum DrinkSize {
 		 SHORT,
 		 TALL,
 		 GRANDE
 	 }
 	 
+	/**
+	 * @param itemId
+	 * @param itemName
+	 * @param description
+	 * @param cost
+	 */
+	public Beverage(String itemId, String itemName, String description, Float cost, TempType temp, DrinkSize size) {
+		// TODO Auto-generated constructor stub
+		this.itemId = itemId;
+		this.name = itemName;
+		this.description = description;
+		this.cost = cost;
+		this.size = size;
+	}
+
 	public void refill() {}
 
 }

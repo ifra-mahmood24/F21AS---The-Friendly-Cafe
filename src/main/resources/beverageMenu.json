@@ -1,0 +1,20 @@
+{
+	"beverageItems":[
+						{
+							"itemId" : "B001",
+							"name" : "diet coke",
+							"description" : "Tin - 330ml",
+							"cost" : "1.99",
+							"size" : "SHORT",
+							"temp" : "COLD"
+						},
+						{
+							"itemId" : "B002",
+							"name" : "Coke",
+							"description" : " Coke - 330ml",
+							"cost" : "1.99",
+							"size" : "SHORT",
+							"temp" : "COLD"
+						}
+					]
+}

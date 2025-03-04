@@ -1,0 +1,38 @@
+{
+  "orders" : [ {
+    "orderId" : "ORD42--2011267878",
+    "customerId" : "dsa@gmail.com",
+    "orderedItems" : {
+      "B001" : 4,
+      "F001" : 4
+    }
+  }, {
+    "orderId" : "ORD42-1781039315",
+    "customerId" : "dsa@gmail.com",
+    "orderedItems" : {
+      "B001" : 4,
+      "F001" : 4
+    }
+  }, {
+    "orderId" : "ORD42-701107022",
+    "customerId" : "dsa@gmail.com",
+    "orderedItems" : {
+      "B001" : 4,
+      "F001" : 4
+    }
+  }, {
+    "orderId" : "ODR002",
+    "customerId" : "asd@gmail.com",
+    "orderedItems" : {
+      "F002" : 1,
+      "B002" : 1
+    }
+  }, {
+    "orderId" : "ODR002",
+    "customerId" : "asd@gmail.com",
+    "orderedItems" : {
+      "F002" : 1,
+      "B002" : 1
+    }
+  } ]
+}
