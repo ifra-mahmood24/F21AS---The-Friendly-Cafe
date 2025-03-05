@@ -1,36 +1,35 @@
 package com.friendlycafe.pojo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.friendlycafe.service.DataService;
 
 public class Dessert extends Item {
      
-	public TempType type;
-	public DrinkSize size;
-	public boolean isRefill;
+    private static final Logger dessertLogger = LoggerFactory.getLogger(DataService.class);
+    public boolean sugarFree;
 	
-	public enum TempType {
-			COLD,
-			HOT
-		}
 	
-	public enum DrinkSize {
-		 SHORT,
-		 TALL,
-		 GRANDE
-	 }
-	 
 	/**
 	 * @param itemId
 	 * @param itemName
 	 * @param description
 	 * @param cost
+     * @param sugarFree
 	 */
-	public Dessert(String itemId, String itemName, String description, Float cost, TempType temp, DrinkSize size) {
+	public Dessert(String itemId, String itemName, String description, Float cost, boolean sugarFree) {
 		// TODO Auto-generated constructor stub
 		this.itemId = itemId;
 		this.name = itemName;
 		this.description = description;
 		this.cost = cost;
-		this.size = size;
+		this.sugarFree = sugarFree;
 	}
 
-	public void refill() {}
+	public void isSugarFree() {
+        if (this.sugarFree == false)
+        {
+            dessertLogger.info("This item is not sugar-free");
+        }
+    }
 }

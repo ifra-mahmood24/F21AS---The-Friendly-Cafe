@@ -13,17 +13,20 @@ import java.util.Map;
 public class Order {
 	public String orderId;
 	public String customerId;
+	public String timeStamp;
 	public HashMap<String, Integer> orderedItems;
 	
 	/**
 	 * @param orderId2
 	 * @param string
+	 * @oaram timeStamp
 	 * @param orderDetail
 	 */
-	public Order(String orderId, String customerMailId, HashMap<String, Integer> orderedItems) {
+	public Order(String orderId, String customerMailId, String timeStamp, HashMap<String, Integer> orderedItems) {
 		// TODO Auto-generated constructor stub
 		this.orderId = orderId;
 		this.customerId = customerMailId;
+		this.timeStamp = timeStamp;
 		this.orderedItems = orderedItems;
 	}
 
