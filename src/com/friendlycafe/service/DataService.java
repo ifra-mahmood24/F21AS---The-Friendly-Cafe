@@ -70,7 +70,7 @@ public class DataService {
 
 			JSONArray foodItemListAsObject = utility.readJSONFile("src/main/resources/foodMenu.json", "foodItems");
 			JSONArray beverageItemListAsObject = utility.readJSONFile("src/main/resources/beverageMenu.json", "beverageItems");
-			JSONArray dessertItemListAsObject = utility.readJSONFile("src/main/resource/dessertMenu.json", "dessertItems");
+			JSONArray dessertItemListAsObject = utility.readJSONFile("src/main/resources/dessertMenu.json", "dessertItems");
 
 			ArrayList<Item> foodItemList = new ArrayList<>();
 			ArrayList<Item> beverageItemList = new ArrayList<>();
@@ -117,7 +117,7 @@ public class DataService {
 				String itemName = JsonIndex.getString("name");
 				String description = JsonIndex.getString("description");
 				Float cost = Float.parseFloat(JsonIndex.getString("cost"));
-				boolean sugarFree = Boolean.parseBoolean(JsonIndex.getString("sugarFree"));
+				Boolean sugarFree = JsonIndex.getBoolean("sugarFree");
 
 				Dessert dessert = new Dessert(itemId, itemName, description, cost, sugarFree);
 				dessertItemList.add(dessert);
@@ -151,7 +151,7 @@ public class DataService {
 		Integer orderId = random.nextInt();
 		Helper utility = new Helper();
 		String timeStamp = LocalDateTime.now().toString();
-		Order order = new Order("ORD"+ orderId.toString(), timeStamp, customerMailId, orderDetail);
+		Order order = new Order("ORD"+ orderId.toString(), customerMailId, timeStamp, orderDetail);
 		ArrayList<Order> allOrders = new ArrayList<>();
 		allOrders.add(order);
 		

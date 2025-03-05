@@ -15,11 +15,12 @@ public class Order {
 	public String customerId;
 	public String timeStamp;
 	public HashMap<String, Integer> orderedItems;
+
 	
 	/**
 	 * @param orderId2
 	 * @param string
-	 * @oaram timeStamp
+	 * @param timeStamp
 	 * @param orderDetail
 	 */
 	public Order(String orderId, String customerMailId, String timeStamp, HashMap<String, Integer> orderedItems) {
