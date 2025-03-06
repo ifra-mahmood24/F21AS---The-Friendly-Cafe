@@ -29,18 +29,4 @@ public class Customer {
 
 	public Customer() {}
 	
-	public Customer getCustomerDetails(String mailId) {
-		Customer customer = new Customer();
-		return customer;
-	}
-	
-	public boolean saveCustomerDetails(String name, String mailId ) {
-		this.name = name;
-		this.mailId = mailId;
-		return true;
-	}
-
-	public boolean updateCustomerDetails(String customerId) {
-		return true;
-	}
 }
