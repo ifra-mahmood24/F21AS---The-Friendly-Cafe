@@ -15,26 +15,26 @@
     "itemId" : "F002",
     "itemName" : "Cheese Bagel",
     "itemCost" : 4.2,
-    "count" : 4,
-    "totalCost" : 16.8
+    "count" : 6,
+    "totalCost" : 25.199999
   }, {
     "itemId" : "F003",
     "itemName" : "Chicken Caesar Salad",
     "itemCost" : 5.0,
-    "count" : 16,
-    "totalCost" : 80.0
+    "count" : 20,
+    "totalCost" : 100.0
   }, {
     "itemId" : "F004",
     "itemName" : "Club Sandwich",
     "itemCost" : 5.3,
-    "count" : 10,
-    "totalCost" : 53.0
+    "count" : 12,
+    "totalCost" : 63.600002
   }, {
     "itemId" : "F005",
     "itemName" : "Crisps",
     "itemCost" : 1.5,
-    "count" : 6,
-    "totalCost" : 9.0
+    "count" : 10,
+    "totalCost" : 15.0
   } ],
-  "earningForTheDay" : 182.79999923706055
+  "earningForTheDay" : 227.80000114440918
 }
