@@ -1,4 +1,4 @@
-package com.friendlycafe.exceptions;
+package com.friendlycafe.exception;
 
 public class CustomerFoundException extends Exception{
 	
