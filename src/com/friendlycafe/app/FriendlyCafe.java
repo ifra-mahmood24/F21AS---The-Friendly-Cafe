@@ -222,17 +222,17 @@ public class FriendlyCafe {
 		buttonPanel.add(dessertButton);
 
 		// Add button functionalities
-        foodButton.addActionListener(_ -> {
+        foodButton.addActionListener(e -> {
             CardLayout cl = (CardLayout) mainPanel.getLayout();
             cl.show(mainPanel, "FOOD");
         });
 
-        beverageButton.addActionListener(_ -> {
+        beverageButton.addActionListener(e -> {
             CardLayout cl = (CardLayout) mainPanel.getLayout();
             cl.show(mainPanel, "BEVERAGE");
         });
 
-        dessertButton.addActionListener(_ -> {
+        dessertButton.addActionListener(e -> {
             CardLayout cl = (CardLayout) mainPanel.getLayout();
             cl.show(mainPanel, "DESSERT");
         });
