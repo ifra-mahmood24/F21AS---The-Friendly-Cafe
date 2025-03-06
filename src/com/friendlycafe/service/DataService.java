@@ -1,23 +1,20 @@
-/**
+/**]
  * Author 			: prasanths 
  * Last Modified By : prasanths
  */
 package com.friendlycafe.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.net.URL;
-import java.nio.charset.*;
-import java.nio.file.*;
+
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
-import java.util.Scanner;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,14 +28,13 @@ import com.friendlycafe.pojo.Dessert;
 import com.friendlycafe.pojo.Customer;
 import com.friendlycafe.pojo.Item;
 import com.friendlycafe.pojo.Order;
+import com.friendlycafe.pojo.Report;
 import com.friendlycafe.utility.Helper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * Write logic to read the file and store it
- */
+
 public class DataService {
 	Map<String, Map<String,String>> customers = new HashMap<>();
 
@@ -46,24 +42,6 @@ public class DataService {
 
 	public static final ArrayList<Item> menuList = new ArrayList<>();
 	
-	// CODE FUNCTIONALLY STARTING AREA
-	// logic to read data from file
-	// use report folder in /assets/report
-	// public void ReadData(Map<String, Map<String, Integer>> orderMap) {
-	// 	String customerEmail = orderMap.keySet().iterator().next();
-	// 	for (Map.Entry<String, Map<String, Integer>> entry : orderMap.entrySet()) {
-	// 		serviceLogger.info("entry {}",entry);
-
-	// 	}
-	// 	String customer = customerEmail.substring(0,customerEmail.lastIndexOf('@'));
-	// 	serviceLogger.info("customer email {}", customer);
-	// 	serviceLogger.info("I take care of reading  the data");
-	// }
-	
-	// public String generateOrderID() {
-	// 	return null;
-	// }
-	//EXECUTES WHEN APPLICATION IS GOING TO EXIT
 	public ArrayList<Item> getMenu() {
 		try {
 			Helper utility = new Helper();
@@ -127,7 +105,6 @@ public class DataService {
 			menuList.addAll(beverageItemList);
 			menuList.addAll(dessertItemList);
 			
-//			serviceLogger.info("Data Read & wrote in memory");
 			return menuList;
 			
 		} catch (Exception e) {
@@ -136,17 +113,7 @@ public class DataService {
 		}
 	}
 
-	// EXECUTES WHEN APPLICATION IS GOING TO EXIT
-	public void generateReport() {
-
-//		serviceLogger.info("I take care of generating the report");
-	}
-
-	/**
-	 * 
-	 */
 	public void saveOrder(String customerMailId, HashMap<String, Integer> orderDetail) {
-		// TODO Auto-generated method stub
 		Random random = new Random();
 		Integer orderId = random.nextInt();
 		Helper utility = new Helper();
@@ -155,37 +122,31 @@ public class DataService {
 		ArrayList<Order> allOrders = new ArrayList<>();
 		allOrders.add(order);
 		
-//		serviceLogger.info(" OrderList size : "+allOrders.size());
 
 		JSONArray allOrdersAsJSON = utility.readJSONFile("src/main/resources/orders.json", "orders");
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		for(Object oldOrder : allOrdersAsJSON) {
-//			serviceLogger.info("OLD ORDERS : "+oldOrder);
 			
 			try {
 				Order thisOrder = objectMapper.readValue(oldOrder.toString(),Order.class);
 				allOrders.add(thisOrder);
 			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-//		serviceLogger.info(" Order as list : "+allOrders.toString());
-		if(!allOrders.isEmpty()) {
+		if(!allOrders.isEmpty()) 
 			utility.writeJSONFileForOrders("src/main/resources/orders.json", allOrders);
-		}		
 	}
 
 	public boolean checkCustomer(String mailId) {
 		Helper utility = new Helper();
 		JSONArray customersListAsObject = utility.readJSONFile("src/main/resources/customers.json", "customers");
+		
 		for(int index = 0; index < customersListAsObject.length(); index++) {
 			JSONObject JsonIndex = customersListAsObject.getJSONObject(index);
-			serviceLogger.info( mailId + " ==?  "+JsonIndex.getString("mailId").toString()+" ");
 			if(JsonIndex.getString("mailId").toString().equalsIgnoreCase(mailId) == true) return true;
 		}
 		return false;
@@ -195,21 +156,89 @@ public class DataService {
 		Helper utility = new Helper();
 		Customer newCustomer = new Customer(name, mailId);
 		JSONArray customersListAsObject = utility.readJSONFile("src/main/resources/customers.json", "customers");
-
 		ArrayList<Customer> allCustomers = new ArrayList<>();
+
 		for(int index = 0; index < customersListAsObject.length(); index++) {
+		
 			JSONObject JsonIndex = customersListAsObject.getJSONObject(index);
 			Customer customer = new Customer(JsonIndex.getString("name"),JsonIndex.getString("mailId"),JsonIndex.getBoolean("isVIP"));
 			allCustomers.add(customer);
-			
-//			serviceLogger.info(" OrderList size : "+allOrders.size());
 	
 		}
 		allCustomers.add(newCustomer);
-		if(!allCustomers.isEmpty()) {
+		
+		if(!allCustomers.isEmpty())
 			utility.writeJSONFileForCustomers("src/main/resources/customers.json", allCustomers);
-		}
+
 		return false;
 		
+	}
+	
+	
+	public void generateReport() {
+		Helper utility = new Helper();
+		ArrayList<Report> allOrderedItems  = new ArrayList<>();
+		ArrayList<Item> menu = getMenu();
+		ArrayList<Order> todaysOrders = new ArrayList<>();
+		try {	
+			JSONArray ordersListAsObject = utility.readJSONFile("src/main/resources/orders.json", "orders");
+
+			DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+
+			for(int index = 0; index < ordersListAsObject.length(); index++) {
+
+				JSONObject JsonIndex = ordersListAsObject.getJSONObject(index);
+				String orderId = JsonIndex.getString("orderId");
+				String customerId = JsonIndex.getString("customerId");
+				String timeStamp = JsonIndex.getString("timeStamp");
+				
+				boolean isTodayOrder = LocalDate.parse(timeStamp.split("T")[0], formatter).toString().equals(LocalDate.now().toString());
+				
+				if(isTodayOrder) {
+					JSONObject orderedItemsAsJSON = JsonIndex.getJSONObject("orderedItems");
+					Map<String, Object> map = orderedItemsAsJSON.toMap();
+					
+					HashMap<String, Integer> hashMap = new HashMap<>();
+					
+					for(Entry<String, Object> entry : map.entrySet()) {
+						hashMap.put(entry.getKey(), Integer.parseInt(entry.getValue().toString()));
+					}
+					Order thisOrder = new Order(orderId, customerId, timeStamp,hashMap);
+					
+					todaysOrders.add(thisOrder);
+				}
+					
+			}
+			serviceLogger.info("TODAYS TOTAL ORDER SIZE : "+ todaysOrders.size());
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		Map<String, Integer> map = new HashMap<>();
+		Set<String> computedOrders = new HashSet<>();
+		
+		for(Order order : todaysOrders) 
+			for(Entry<String, Integer> orderedItems : order.orderedItems.entrySet())
+				if(!map.containsKey(orderedItems.getKey()))
+					map.put(orderedItems.getKey() , orderedItems.getValue());
+				else
+					map.put(orderedItems.getKey() ,map.get(orderedItems.getKey()) + orderedItems.getValue());
+		
+		for(Entry<String, Integer> entry : map.entrySet()) {
+			String key = entry.getKey();
+			Integer value = entry.getValue();
+			for(Item item : menu) 
+				if(item.itemId.equals(key)) {
+					Report reportOrder = new Report(key,item.name, item.cost, value);
+					if(!computedOrders.contains(key)) {
+						computedOrders.add(key);
+						allOrderedItems.add(reportOrder);
+					}
+				}
+		}
+		
+		utility.writeReport(allOrderedItems);
+
 	}
 }

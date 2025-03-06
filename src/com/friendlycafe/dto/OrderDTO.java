@@ -2,31 +2,31 @@
  * Author 			: prasanths 
  * Last Modified By : prasanths
  */
-package com.friendlycafe.pojo;
+package com.friendlycafe.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.friendlycafe.pojo.Order;
 
 /**
  * 
  */
-public class CustomerContainer {
+public class OrderDTO {
 	@JsonProperty
-	List<Customer> customers;
+	List<Order> orders;
 
 	/**
 	 * @return the orders
 	 */
-	public List<Customer> getCustomers() {
-		return customers;
+	public List<Order> getOrders() {
+		return orders;
 	}
 	/**
 	 * @param orders the orders to set
 	 */
-	public void setCustomers(List<Customer> customer) {
-		this.customers = customer;
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 }

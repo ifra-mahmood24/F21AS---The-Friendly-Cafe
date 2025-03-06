@@ -8,7 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,10 +21,13 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.friendlycafe.dto.CustomerDTO;
+import com.friendlycafe.dto.OrderDTO;
+import com.friendlycafe.dto.ReportDTO;
 import com.friendlycafe.pojo.Customer;
-import com.friendlycafe.pojo.CustomerContainer;
+import com.friendlycafe.pojo.Item;
 import com.friendlycafe.pojo.Order;
-import com.friendlycafe.pojo.OrderContainer;
+import com.friendlycafe.pojo.Report;
 import com.friendlycafe.service.DataService;
 
 /**
@@ -51,13 +57,12 @@ public class Helper {
 	 * @return
 	 */
 	public void writeJSONFileForOrders(String path, ArrayList<Order> list) {
-		// TODO Auto-generated method stub
         try {
             ObjectMapper objectMapper = new ObjectMapper();
         	helperLogger.info("Writing... "+list);
-        	OrderContainer container = new OrderContainer();
-        	container.setOrders(list);
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), container);
+        	OrderDTO orders = new OrderDTO();
+        	orders.setOrders(list);
+			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), orders);
 		} catch (StreamWriteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -71,13 +76,12 @@ public class Helper {
 	}
 	
 	public void writeJSONFileForCustomers(String path, ArrayList<Customer> list) {
-		// TODO Auto-generated method stub
         try {
             ObjectMapper objectMapper = new ObjectMapper();
         	helperLogger.info("Writing... "+list.size());
-        	CustomerContainer container = new CustomerContainer();
-        	container.setCustomers(list);
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), container);
+        	CustomerDTO customers = new CustomerDTO();
+        	customers.setCustomers(list);
+			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), customers);
 		} catch (StreamWriteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,6 +93,25 @@ public class Helper {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public void writeReport(ArrayList<Report> allOrderedItems) {
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		LocalDate date = LocalDate.now();
+		Double earningForTheDay = 0.0;
+		for(Report itemTotalCost: allOrderedItems) {
+			earningForTheDay += itemTotalCost.totalCost;
+		}
+		try {
+			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File("src/main/resources/report_"+date+".json"),
+					new ReportDTO(allOrderedItems, earningForTheDay));
+		} catch (Exception e) {
+			helperLogger.info("WRITE REPORT FAILING....");
+			e.printStackTrace();
+		}		
+	}
+	
 	
 	public JSONObject orderToJSON(Order order) {
 		JSONObject object = new JSONObject();

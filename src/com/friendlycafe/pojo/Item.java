@@ -4,7 +4,9 @@
  */
 package com.friendlycafe.pojo;
 
-/**
+import java.util.Objects;
+
+;/**
  * This class contains details about an item that is in the menu
  */
 public class Item {
@@ -27,7 +29,19 @@ public class Item {
 		this.description = description;
 		this.cost = cost;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		Item newItem = (Item) object;
+		if(this.itemId.equals(newItem.itemId)) return true;
+		else if(this == object) return true;
+		else return false;
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(itemId);
+	}
 	
 	/**
 	 * 
@@ -47,7 +61,7 @@ public class Item {
 	
 	public Item getItem(String itemId) {
 		// use itemId to find the particular item
-		return new Item();
+		return  this;
 	}
 	
 	public boolean deleteItem(String itemId) {
