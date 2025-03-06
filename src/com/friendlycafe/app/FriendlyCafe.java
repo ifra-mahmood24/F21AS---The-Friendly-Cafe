@@ -21,15 +21,18 @@ import org.slf4j.LoggerFactory;
 
 import com.friendlycafe.pojo.Item;
 import com.friendlycafe.service.DataService;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 
  */
 public class FriendlyCafe {
 
-    private static final Logger appLogger = LoggerFactory.getLogger(FriendlyCafe.class);
+	private static final Logger appLogger = LoggerFactory.getLogger(FriendlyCafe.class);
 
 	public static void main(String[] args) {
+
 		
 		appLogger.info(" Application Started... ");
 

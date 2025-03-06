@@ -12,6 +12,7 @@ import java.nio.charset.*;
 import java.nio.file.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.friendlycafe.pojo.Beverage;
 import com.friendlycafe.pojo.Beverage.DrinkSize;
 import com.friendlycafe.pojo.Beverage.TempType;
+import com.friendlycafe.pojo.Dessert;
 import com.friendlycafe.pojo.Customer;
 import com.friendlycafe.pojo.Item;
 import com.friendlycafe.pojo.Order;
@@ -38,6 +40,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Write logic to read the file and store it
  */
 public class DataService {
+	Map<String, Map<String,String>> customers = new HashMap<>();
 
 	private static final Logger serviceLogger = LoggerFactory.getLogger(DataService.class);
 
@@ -46,15 +49,32 @@ public class DataService {
 	// CODE FUNCTIONALLY STARTING AREA
 	// logic to read data from file
 	// use report folder in /assets/report
+	// public void ReadData(Map<String, Map<String, Integer>> orderMap) {
+	// 	String customerEmail = orderMap.keySet().iterator().next();
+	// 	for (Map.Entry<String, Map<String, Integer>> entry : orderMap.entrySet()) {
+	// 		serviceLogger.info("entry {}",entry);
+
+	// 	}
+	// 	String customer = customerEmail.substring(0,customerEmail.lastIndexOf('@'));
+	// 	serviceLogger.info("customer email {}", customer);
+	// 	serviceLogger.info("I take care of reading  the data");
+	// }
+	
+	// public String generateOrderID() {
+	// 	return null;
+	// }
+	//EXECUTES WHEN APPLICATION IS GOING TO EXIT
 	public ArrayList<Item> getMenu() {
 		try {
 			Helper utility = new Helper();
 
 			JSONArray foodItemListAsObject = utility.readJSONFile("src/main/resources/foodMenu.json", "foodItems");
 			JSONArray beverageItemListAsObject = utility.readJSONFile("src/main/resources/beverageMenu.json", "beverageItems");
+			JSONArray dessertItemListAsObject = utility.readJSONFile("src/main/resources/dessertMenu.json", "dessertItems");
 
 			ArrayList<Item> foodItemList = new ArrayList<>();
 			ArrayList<Item> beverageItemList = new ArrayList<>();
+			ArrayList<Item> dessertItemList = new ArrayList<>();
 
 			
 			//Reading Food Menu List 
@@ -87,8 +107,25 @@ public class DataService {
 				
 				beverageItemList.add(beverage);
 			}
+
+			//Reading Dessert List
+			for (int index = 0; index < dessertItemListAsObject.length(); index++) {
+
+				JSONObject JsonIndex = dessertItemListAsObject.getJSONObject(index);
+
+				String itemId = JsonIndex.getString("itemId");
+				String itemName = JsonIndex.getString("name");
+				String description = JsonIndex.getString("description");
+				Float cost = Float.parseFloat(JsonIndex.getString("cost"));
+				Boolean sugarFree = JsonIndex.getBoolean("sugarFree");
+
+				Dessert dessert = new Dessert(itemId, itemName, description, cost, sugarFree);
+				dessertItemList.add(dessert);
+			}
+
 			menuList.addAll(foodItemList);
 			menuList.addAll(beverageItemList);
+			menuList.addAll(dessertItemList);
 			
 //			serviceLogger.info("Data Read & wrote in memory");
 			return menuList;
@@ -113,8 +150,8 @@ public class DataService {
 		Random random = new Random();
 		Integer orderId = random.nextInt();
 		Helper utility = new Helper();
-		String identifier = LocalDate.now().getDayOfMonth()+""+LocalTime.now().getHour()+"-";
-		Order order = new Order("ORD"+ identifier  + orderId.toString(), customerMailId, orderDetail);
+		String timeStamp = LocalDateTime.now().toString();
+		Order order = new Order("ORD"+ orderId.toString(), customerMailId, timeStamp, orderDetail);
 		ArrayList<Order> allOrders = new ArrayList<>();
 		allOrders.add(order);
 		
