@@ -1,7 +1,7 @@
 package com.friendlycafe.service;
 
-// public class CafeService {
-//     public int totalCost() {
-//         Order order = new Order();
-//     }
-// }
+public class CafeService {
+    public double applyDiscount(double cost) {
+        return cost;
+    }
+}
