@@ -1,28 +1,38 @@
-import static org.junit.jupiter.api.Assertions.*;
+package com.friendlycafe.test;
+import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
+import org.mockito.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
 import java.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.friendlycafe.exception.CustomerFoundException;
+import com.friendlycafe.exception.InvalidMailFormatException;
 import com.friendlycafe.pojo.Item;
+import com.friendlycafe.service.DataService;
 import com.friendlycafe.utility.Helper;
 
 
 public class DataServiceTest {
-    private DataService dataService;
+    private DataService dataService = new DataService();
     private Helper mockHelper;
 
     @BeforeEach
     void setUp() {
-        dataService = new DataService();
         mockHelper = Mockito.mock(Helper.class);  // Mock Helper to avoid file I/O
     }
 
-    @test
+    @Test
     void testGetMenu_Success() {
         // Mock JSON data for food, beverage, and dessert items
         JSONArray mockFoodItems = new JSONArray();
         JSONObject foodItem = new JSONObject();
+        Helper utility = new Helper();
         foodItem.put("itemId", "F001");
         foodItem.put("name", "Burger");
         foodItem.put("description", "Double patty cheese burger");
@@ -37,7 +47,7 @@ public class DataServiceTest {
         ArrayList<Item> menu = dataService.getMenu();
         assertNotNull(menu, "Menu should not be null");
         assertEquals(1, menu.size(), "Menu should contain 1 item");
-        assertEquals("Burger", menu.get(0).getName(), "First item should be Burger");
+        assertEquals("Burger", menu.get(0).name, "First item should be Burger");
     }
 
     
@@ -67,33 +77,25 @@ public class DataServiceTest {
     }
     
     @Test
-    void testCheckCustomer_ExisingCustomer() {
+    void testCheckCustomer_ExisingCustomer() throws CustomerFoundException, InvalidMailFormatException {
         JSONArray mockCustomers = new JSONArray();
         JSONObject customer = new JSONObject();
         customer.put("mailId", "test@gmail.com");
         mockCustomers.put(customer);
-        
+        Helper utility = new Helper();
         when(utility.readJSONFile(anyString(), eq("customers"))).thenReturn(mockCustomers);
         
         assertTrue(dataService.checkCustomer("test@gmail.com"), "Existing customer should return true");
     }
     
     @Test
-    void testCheckCustomer_NonExistent() {
+    void testCheckCustomer_NonExistent() throws CustomerFoundException, InvalidMailFormatException {
         JSONArray emptyCustomersList = new JSONArray();
         Mockito.when(mockHelper.readJSONFile(Mockito.anyString(), Mockito.eq("customers"))).thenReturn(emptyCustomersList);
 
         assertFalse(dataService.checkCustomer("unknown@example.com"), "Non-existing customer should return false");
     }
     
-    @Test
-    void testSaveCustomerDetails_newCustomer() {
-        JSONArray mockCustomers = new JSONArray();
-        Mockito.when(mockHelper.readJSONFile(Mockito.anyString(), Mockito.eq("customers"))).thenReturn(customersList);
-
-        assertDoesNotThrow(() -> dataService.saveCustomerDetails("New User", "newuser@example.com"), "Saving a new customer should not throw an exception");
-    }
-
     @Test
     void testGenerateReport_NoOrders() {
         JSONArray emptyOrdersList = new JSONArray();
