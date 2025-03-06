@@ -21,6 +21,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.friendlycafe.exception.CustomerFoundException;
+import com.friendlycafe.exception.InvalidMailFormatException;
 import com.friendlycafe.pojo.Beverage;
 import com.friendlycafe.pojo.Beverage.DrinkSize;
 import com.friendlycafe.pojo.Beverage.TempType;
@@ -141,7 +143,7 @@ public class DataService {
 			utility.writeJSONFileForOrders("src/main/resources/orders.json", allOrders);
 	}
 
-	public boolean checkCustomer(String mailId) {
+	public boolean checkCustomer(String mailId) throws CustomerFoundException , InvalidMailFormatException{
 		Helper utility = new Helper();
 		JSONArray customersListAsObject = utility.readJSONFile("src/main/resources/customers.json", "customers");
 		
