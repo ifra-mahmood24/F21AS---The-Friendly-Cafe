@@ -303,7 +303,8 @@ public class FriendlyCafe {
 			cl.show(mainPanel, "CHECKOUT");
 			if(!service.checkCustomer(mailId.getText()))
 				service.saveCustomerDetails(customerName.getText().toString(), mailId.getText().toString());
-			
+			HashMap<String, Integer> orderWithPossibleDiscounts = service2.applyDiscount(orderingItem);
+			service.saveOrder(mailId.getText(), orderWithPossibleDiscounts);
 
 		});
 
