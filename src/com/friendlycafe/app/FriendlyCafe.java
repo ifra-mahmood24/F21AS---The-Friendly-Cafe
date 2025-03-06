@@ -12,6 +12,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,24 +69,20 @@ public class FriendlyCafe {
 
 		//Get Menu from JSON file
 		ArrayList<Item> menu = service.getMenu();
-
-		// //Printing all items in menu
-		// System.out.println("Item\t\t\t\t\t\tCost");
-		// for(Item item : menu) {
-		// 	System.out.println(item.name +"\t\t\t\t\t£"+item.cost);
-		// }
 		
 		// Calling the custom renderer for JList
 		ItemListRenderer itemRenderer = new FriendlyCafe().new ItemListRenderer();
 
 		//Initiate list for total costs display
 		ArrayList<Float> orderList = new ArrayList<>();
+
 		//Sum of orderList will be stored here
 		double totalCost[];
 		totalCost = new double[1];
 
-		service2.applyDiscount(totalCost[0]);
-
+		//Save order items and their quantity
+		HashMap<String, Integer> orderingItem = new HashMap<>();
+		
 		//Dividing menu items into its categories
 		List<Item> foodItems = new ArrayList<>();
         List<Item> beverageItems = new ArrayList<>();
@@ -119,16 +117,17 @@ public class FriendlyCafe {
 		JLabel welcomeLabel = new JLabel("Welcome to The Friendly Cafe");
 		welcomeLabel.setPreferredSize(new Dimension(400,20));
 		JLabel customerNameLabel = new JLabel("Customer Name : ");
-		JFormattedTextField customerName = new JFormattedTextField();
-		customerName.setPreferredSize(new Dimension(400,20));
+		JTextField customerName = new JTextField();
+		customerName.setPreferredSize(new Dimension(350,20));
 		JLabel mailLabel = new JLabel("Mail ID : ");
-		JFormattedTextField mailId = new JFormattedTextField();
-		mailId.setPreferredSize(new Dimension(200,20));
+		JTextField mailId = new JTextField();
+		mailId.setPreferredSize(new Dimension(380,20));
 		homePanel.setAutoscrolls(true);
 		homePanel.setPreferredSize(new Dimension(500,500));
 		homePanel.setBackground(Color.CYAN);
 		homePanel.add(welcomeLabel);
 		homePanel.add(customerNameLabel);
+		homePanel.add(customerName);
 		homePanel.add(mailLabel);
 		homePanel.add(mailId);
 
@@ -139,24 +138,35 @@ public class FriendlyCafe {
         JPanel foodPanel = new JPanel();
 		foodPanel.setLayout(new FlowLayout());
         foodPanel.add(new JLabel("Food Items"));
-		JList<Item> foodList = new JList<>(foodItems.toArray(new Item[0]));
+		JList<Item> foodList = new JList<>(foodItems.toArray(new Item[0])); //convert to JList so that it can be shown in JScrollPane
 		JLabel totalCostFood = new JLabel();
 		foodList.setCellRenderer(itemRenderer); // Set custom renderer for food list
-		foodList.addListSelectionListener(e -> { // Setting what happens when you select item from list
-			if (!e.getValueIsAdjusting()) {
-				Item selectedItem = foodList.getSelectedValue();
-				if (selectedItem != null) {
-					orderList.add(selectedItem.cost); // Add selected item to orderList
+		foodList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e)  { // Setting what happens when you select item from list
+				int index = foodList.locationToIndex(e.getPoint());
+				if (index != -1) {
+					
+					
+					Item selectedItem = foodList.getModel().getElementAt(index);
+					orderList.add(selectedItem.cost);
+					if(orderingItem.containsKey(selectedItem.itemId))
+						orderingItem.put(selectedItem.itemId, orderingItem.get(selectedItem.itemId) + 1); //Increment old quantity value at each click
+					else
+						orderingItem.put(selectedItem.itemId, 1); // Default quantity value is 1 at first click
+					
+					appLogger.info("{}",orderingItem);
 					appLogger.info("{}", orderList);
 					appLogger.info("{}", orderList.stream().mapToDouble(Float::doubleValue).sum());
 					totalCost[0] = orderList.stream().mapToDouble(Float::doubleValue).sum(); // Calculate sum of orderList
-					appLogger.info(String.format("%.2f",totalCost[0]));
 					totalCostFood.setText(String.format("%.2f",totalCost[0])); // Show current total cost
 				}
+			
 			}
 		});
 		foodPanel.add(new JScrollPane(foodList));
-		foodPanel.add(totalCostFood); // Total cost for food panel
+		foodPanel.add(new JLabel("Current Cost")); // Total cost for dessert panel
+		foodPanel.add(totalCostFood);
 
 		//Second card of main panel is food panel
         mainPanel.add(foodPanel, "FOOD");
@@ -164,24 +174,33 @@ public class FriendlyCafe {
 		// Beverage Panel
         JPanel beveragePanel = new JPanel(new FlowLayout());
         beveragePanel.add(new JLabel("Beverages"));
-		JList<Item> beverageList = new JList<>(beverageItems.toArray(new Item[0]));
+		JList<Item> beverageList = new JList<>(beverageItems.toArray(new Item[0])); //convert to JList so that it can be shown in JScrollPane
 		JLabel totalCostBeverage = new JLabel();
         beverageList.setCellRenderer(itemRenderer);  // Set custom renderer for beverage list
-        beverageList.addListSelectionListener(e -> { // Setting what happens when you select item from list
-            if (!e.getValueIsAdjusting()) {
-                Item selectedItem = beverageList.getSelectedValue();
-                if (selectedItem != null) {
-					orderList.add(selectedItem.cost);  // Add selected item to orderList
+		beverageList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e)  { // Setting what happens when you select item from list
+				int index = beverageList.locationToIndex(e.getPoint());
+				if (index != -1) {
+					Item selectedItem = beverageList.getModel().getElementAt(index);
+					orderList.add(selectedItem.cost);
+					if(orderingItem.containsKey(selectedItem.itemId))
+						orderingItem.put(selectedItem.itemId, orderingItem.get(selectedItem.itemId) + 1); //Increment old quantity value at each click
+					else
+						orderingItem.put(selectedItem.itemId, 1); // Default quantity value is 1 at first click
+					appLogger.info("{}",orderingItem);
 					appLogger.info("{}", orderList);
 					appLogger.info("{}", orderList.stream().mapToDouble(Float::doubleValue).sum());
 					totalCost[0] = orderList.stream().mapToDouble(Float::doubleValue).sum(); // Calculate sum of orderList
 					appLogger.info(String.format("%.2f",totalCost[0]));
 					totalCostBeverage.setText(String.format("%.2f",totalCost[0])); // Show current total cost
 				}
-            }
-        });
+			
+			}
+		});
         beveragePanel.add(new JScrollPane(beverageList));
-		beveragePanel.add(totalCostBeverage); // Total cost for beverage panel
+		beveragePanel.add(new JLabel("Current Cost")); // Total cost for dessert panel
+		beveragePanel.add(totalCostBeverage); 
 
 		//Third card of main panel is beverage panel
         mainPanel.add(beveragePanel, "BEVERAGE");
@@ -189,27 +208,65 @@ public class FriendlyCafe {
 		// Dessert Panel
         JPanel dessertPanel = new JPanel(new FlowLayout());
         dessertPanel.add(new JLabel("Desserts"));
-		JList<Item> dessertList = new JList<>(dessertItems.toArray(new Item[0]));
+		JList<Item> dessertList = new JList<>(dessertItems.toArray(new Item[0])); //convert to JList so that it can be shown in JScrollPane
 		JLabel totalCostDessert = new JLabel();
         dessertList.setCellRenderer(itemRenderer);  // Set custom renderer for dessert list
-        dessertList.addListSelectionListener(e -> { // Setting what happens when you select item from list
-            if (!e.getValueIsAdjusting()) {
-                Item selectedItem = dessertList.getSelectedValue();
-                if (selectedItem != null) {
-					orderList.add(selectedItem.cost);  // Add selected item to orderList
+        dessertList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e)  { // Setting what happens when you select item from list
+				int index = dessertList.locationToIndex(e.getPoint());
+				if (index != -1) {
+					Item selectedItem = dessertList.getModel().getElementAt(index);
+					orderList.add(selectedItem.cost); 
+					if(orderingItem.containsKey(selectedItem.itemId)) //Increment old quantity value at each click
+						orderingItem.put(selectedItem.itemId, orderingItem.get(selectedItem.itemId) + 1);
+					else
+						orderingItem.put(selectedItem.itemId, 1);// Default quantity value is 1 at first click
+					appLogger.info("{}",orderingItem);
 					appLogger.info("{}", orderList);
 					appLogger.info("{}", orderList.stream().mapToDouble(Float::doubleValue).sum());
 					totalCost[0] = orderList.stream().mapToDouble(Float::doubleValue).sum(); // Calculate sum of orderList
 					appLogger.info(String.format("%.2f",totalCost[0]));
 					totalCostDessert.setText(String.format("%.2f",totalCost[0])); // Show current total cost
-                }
-            }
-        });
+				}
+			
+			}
+		});
         dessertPanel.add(new JScrollPane(dessertList));
-		dessertPanel.add(totalCostDessert); // Total cost for dessert panel
+		dessertPanel.add(new JLabel("Current Cost")); // Total cost for dessert panel
+		dessertPanel.add(totalCostDessert); 
 
 		//Fourth card of main panel is dessert panel
         mainPanel.add(dessertPanel, "DESSERT");
+
+
+		//Checkout Panel
+		JPanel checkoutPanel = new JPanel(new FlowLayout());
+		checkoutPanel.add(new JLabel("Checkout"));
+		// // Convert ArrayList to an array for JList
+        // DefaultListModel<String> listModel = new DefaultListModel<>();
+        // for (Float cost : orderList) {
+        //     listModel.addElement("£" + cost);  // Format for display
+        // }
+
+        // // Create JList and put it inside JScrollPane
+        // JList<String> orderJList = new JList<>(listModel);
+        // JScrollPane scrollPane = new JScrollPane(orderJList);
+		// scrollPane.setBackground(Color.BLUE);
+		// scrollPane.setPreferredSize(new Dimension(300,200));
+		// // JList<Item> checkoutOrder = new JList<>(orderList.toArray(new Item[0]));
+		
+		String total = String.format("%.2f",totalCost[0]);
+		checkoutPanel.add(new JLabel(total));
+		JLabel totalCostLabel = new JLabel("Total Cost");
+		
+		checkoutPanel.add(totalCostLabel);
+
+		
+
+		//Fifth card of main panel is checkout panel
+		mainPanel.add(checkoutPanel, "CHECKOUT");
+
 
 		//buttons for item specific pane
 		JPanel buttonPanel = new JPanel();
@@ -217,9 +274,13 @@ public class FriendlyCafe {
 		JButton beverageButton = new JButton("Beverage Items");
 		JButton dessertButton = new JButton("Dessert Items");
 
+		//checkout button
+		JButton checkoutButton = new JButton("Checkout");
+
 		buttonPanel.add(foodButton);
 		buttonPanel.add(beverageButton);
 		buttonPanel.add(dessertButton);
+		buttonPanel.add(checkoutButton);
 
 		// Add button functionalities
         foodButton.addActionListener(e -> {
@@ -237,6 +298,16 @@ public class FriendlyCafe {
             cl.show(mainPanel, "DESSERT");
         });
 
+		checkoutButton.addActionListener(e -> {
+			CardLayout cl = (CardLayout) mainPanel.getLayout();
+			cl.show(mainPanel, "CHECKOUT");
+			if(!service.checkCustomer(mailId.getText()))
+				service.saveCustomerDetails(customerName.getText().toString(), mailId.getText().toString());
+			HashMap<String, Integer> orderWithPossibleDiscounts = service2.applyDiscount(orderingItem);
+			service.saveOrder(mailId.getText(), orderWithPossibleDiscounts);
+
+		});
+
 		// Main container to hold panels
         JPanel contentPanel = new JPanel(new BorderLayout());
 		// contentPanel.add(totalCostPanel, BorderLayout.SOUTH);
@@ -246,7 +317,7 @@ public class FriendlyCafe {
 		
 		frame.add(contentPanel);
 		frame.setBounds(50, 50, 500, 500);
-		frame.setPreferredSize(new Dimension(450,300));
+		frame.setPreferredSize(new Dimension(500,300));
 		frame.pack();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
@@ -254,26 +325,13 @@ public class FriendlyCafe {
 		// GUI End
 
 		
-		// GET VALUES FROM GUI(Customer Name, Email, order)
-		Customer customer = new Customer("aaa", "dsa@mail.com");
-		HashMap<String, Integer> orderingItem = new HashMap<>();	
-
-		//compiling the items for an order
-		orderingItem.put(menu.get(1).itemId, 1);
-		orderingItem.put(menu.get(2).itemId, 2);		
-		orderingItem.put(menu.get(3).itemId, 1);		
-		orderingItem.put(menu.get(4).itemId, 2);		
 		
-		
-		
+		// GET VALUES FROM GUI(Customer Name, Email, order)		
 		//Checking whether the customer is already existing in our records
-		if(!service.checkCustomer(customer.mailId))
-			service.saveCustomerDetails("teat", "test@gmail.com");
 		
-		service.saveOrder(customer.mailId, orderingItem);
-
 		
-		service.generateReport();
+		
+		// service.generateReport();
 		
 		appLogger.info("----- THANKS, VISIT AGAIN -----");
 	}
