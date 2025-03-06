@@ -24,6 +24,8 @@ import java.util.List;
 
 import com.friendlycafe.pojo.Customer;
 import com.friendlycafe.pojo.Item;
+import com.friendlycafe.exception.CustomerFoundException;
+import com.friendlycafe.exception.InvalidMailFormatException;
 import com.friendlycafe.pojo.Beverage;
 import com.friendlycafe.pojo.Dessert;
 import com.friendlycafe.service.DataService;
@@ -301,10 +303,16 @@ public class FriendlyCafe {
 		checkoutButton.addActionListener(e -> {
 			CardLayout cl = (CardLayout) mainPanel.getLayout();
 			cl.show(mainPanel, "CHECKOUT");
+			try {
 			if(!service.checkCustomer(mailId.getText()))
 				service.saveCustomerDetails(customerName.getText().toString(), mailId.getText().toString());
 			HashMap<String, Integer> orderWithPossibleDiscounts = service2.applyDiscount(orderingItem);
 			service.saveOrder(mailId.getText(), orderWithPossibleDiscounts);
+			}catch(CustomerFoundException ex) {
+				ex.printStackTrace();
+			}catch(InvalidMailFormatException ex) {
+				ex.printStackTrace();
+			}
 
 		});
 
