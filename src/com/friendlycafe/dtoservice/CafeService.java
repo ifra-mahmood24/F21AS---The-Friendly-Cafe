@@ -1,4 +1,4 @@
-package com.friendlycafe.service;
+package com.friendlycafe.dtoservice;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -9,14 +9,15 @@ public class CafeService {
     public HashMap<String, Integer> applyDiscount(HashMap<String, Integer> orderedItems) {
         boolean isFridayFeast = LocalDate.now().getDayOfWeek().toString() == DayOfWeek.FRIDAY.toString();
         boolean isWednesdayBanger = LocalDate.now().getDayOfWeek().toString() == DayOfWeek.WEDNESDAY.toString();
+        HashMap<String, Integer> offeredItems = new HashMap<>();
         for(Entry<String, Integer> map : orderedItems.entrySet()){
             if(isFridayFeast && map.getValue() > 1)
-                orderedItems.put(map.getKey(), map.getValue() + 1);
+            	offeredItems.put(map.getKey(), map.getValue() + 1);
             if( isWednesdayBanger && map.getValue() > 3)
-                orderedItems.put(map.getKey(), map.getValue() + 2);
+            	offeredItems.put(map.getKey(), map.getValue() + 2);
         }
 
-        return orderedItems;
+        return offeredItems;
     }
     // public static void saveOrder(String customerId, String timeStamp, Map<String, Integer> orderedItems, double finalCost) {
     //     try {

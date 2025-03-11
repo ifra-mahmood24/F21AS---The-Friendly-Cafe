@@ -2,7 +2,7 @@
  * Author 			: prasanths 
  * Last Modified By : prasanths
  */
-package com.friendlycafe.service;
+package com.friendlycafe.dtoservice;
 
 
 import java.time.LocalDate;
@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.friendlycafe.daoservice.DataAccessService;
 import com.friendlycafe.exception.CustomerFoundException;
 import com.friendlycafe.exception.InvalidMailFormatException;
 import com.friendlycafe.pojo.Beverage;
@@ -31,7 +32,7 @@ import com.friendlycafe.pojo.Customer;
 import com.friendlycafe.pojo.Item;
 import com.friendlycafe.pojo.Order;
 import com.friendlycafe.pojo.Report;
-import com.friendlycafe.utility.Helper;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,17 +41,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class DataService {
 	Map<String, Map<String,String>> customers = new HashMap<>();
 
-	private static final Logger serviceLogger = LoggerFactory.getLogger(DataService.class);
+	private static final Logger logger = LoggerFactory.getLogger(DataService.class);
 
 	public static final ArrayList<Item> menuList = new ArrayList<>();
+	private final DataAccessService daoService = new DataAccessService();
 	
 	public ArrayList<Item> getMenu() {
 		try {
-			Helper utility = new Helper();
 
-			JSONArray foodItemListAsObject = utility.readJSONFile("src/main/resources/foodMenu.json", "foodItems");
-			JSONArray beverageItemListAsObject = utility.readJSONFile("src/main/resources/beverageMenu.json", "beverageItems");
-			JSONArray dessertItemListAsObject = utility.readJSONFile("src/main/resources/dessertMenu.json", "dessertItems");
+
+			JSONArray foodItemListAsObject = daoService.readJSONFile("src/main/resources/foodMenu.json", "foodItems");
+			JSONArray beverageItemListAsObject = daoService.readJSONFile("src/main/resources/beverageMenu.json", "beverageItems");
+			JSONArray dessertItemListAsObject = daoService.readJSONFile("src/main/resources/dessertMenu.json", "dessertItems");
 
 			ArrayList<Item> foodItemList = new ArrayList<>();
 			ArrayList<Item> beverageItemList = new ArrayList<>();
@@ -114,18 +116,32 @@ public class DataService {
 			return null;
 		}
 	}
+	
+	public Order saveOrder(Order order) {
+		
+		
+		float orderCost = calculateCost(order);
+		order.setCost(orderCost);
+		
+		ArrayList<Order> allOldOrders = getAllOldOrders();
+		allOldOrders.add(order);
+		
+		//this should go to DAOService
+		daoService.writeJSONFileForOrders("src/main/resources/orders.json", allOldOrders);
+
+		return order;
+	}
 
 	public void saveOrder(String customerMailId, HashMap<String, Integer> orderDetail) {
 		Random random = new Random();
 		Integer orderId = random.nextInt();
-		Helper utility = new Helper();
 		String timeStamp = LocalDateTime.now().toString();
 		Order order = new Order("ORD"+ orderId.toString(), customerMailId, timeStamp, orderDetail);
 		ArrayList<Order> allOrders = new ArrayList<>();
 		allOrders.add(order);
 		
 
-		JSONArray allOrdersAsJSON = utility.readJSONFile("src/main/resources/orders.json", "orders");
+		JSONArray allOrdersAsJSON = daoService.readJSONFile("src/main/resources/orders.json", "orders");
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		for(Object oldOrder : allOrdersAsJSON) {
@@ -140,12 +156,11 @@ public class DataService {
 			}
 		}
 		if(!allOrders.isEmpty()) 
-			utility.writeJSONFileForOrders("src/main/resources/orders.json", allOrders);
+			daoService.writeJSONFileForOrders("src/main/resources/orders.json", allOrders);
 	}
 
 	public boolean checkCustomer(String mailId) throws CustomerFoundException , InvalidMailFormatException{
-		Helper utility = new Helper();
-		JSONArray customersListAsObject = utility.readJSONFile("src/main/resources/customers.json", "customers");
+		JSONArray customersListAsObject = daoService.readJSONFile("src/main/resources/customers.json", "customers");
 		
 		for(int index = 0; index < customersListAsObject.length(); index++) {
 			JSONObject JsonIndex = customersListAsObject.getJSONObject(index);
@@ -155,9 +170,8 @@ public class DataService {
 	}
 	
 	public boolean saveCustomerDetails(String name, String mailId ) {
-		Helper utility = new Helper();
 		Customer newCustomer = new Customer(name, mailId);
-		JSONArray customersListAsObject = utility.readJSONFile("src/main/resources/customers.json", "customers");
+		JSONArray customersListAsObject = daoService.readJSONFile("src/main/resources/customers.json", "customers");
 		ArrayList<Customer> allCustomers = new ArrayList<>();
 
 		for(int index = 0; index < customersListAsObject.length(); index++) {
@@ -170,7 +184,7 @@ public class DataService {
 		allCustomers.add(newCustomer);
 		
 		if(!allCustomers.isEmpty())
-			utility.writeJSONFileForCustomers("src/main/resources/customers.json", allCustomers);
+			daoService.writeJSONFileForCustomers("src/main/resources/customers.json", allCustomers);
 
 		return false;
 		
@@ -178,12 +192,11 @@ public class DataService {
 	
 	
 	public void generateReport() {
-		Helper utility = new Helper();
 		ArrayList<Report> allOrderedItems  = new ArrayList<>();
 		ArrayList<Item> menu = getMenu();
 		ArrayList<Order> todaysOrders = new ArrayList<>();
 		try {	
-			JSONArray ordersListAsObject = utility.readJSONFile("src/main/resources/orders.json", "orders");
+			JSONArray ordersListAsObject = daoService.readJSONFile("src/main/resources/orders.json", "orders");
 
 			DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
 
@@ -211,7 +224,7 @@ public class DataService {
 				}
 					
 			}
-			serviceLogger.info("TODAYS TOTAL ORDER SIZE : "+ todaysOrders.size());
+			logger.info("TODAYS TOTAL ORDER SIZE : "+ todaysOrders.size());
 		
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -221,7 +234,7 @@ public class DataService {
 		Set<String> computedOrders = new HashSet<>();
 		
 		for(Order order : todaysOrders) 
-			for(Entry<String, Integer> orderedItems : order.orderedItems.entrySet())
+			for(Entry<String, Integer> orderedItems : order.getOrderedItems().entrySet())
 				if(!map.containsKey(orderedItems.getKey()))
 					map.put(orderedItems.getKey() , orderedItems.getValue());
 				else
@@ -240,7 +253,47 @@ public class DataService {
 				}
 		}
 		
-		utility.writeReport(allOrderedItems);
+		daoService.writeReport(allOrderedItems);
 
+	}
+	
+	
+//	-----------------------------INTERNAL HELPER METHOD(CODE READABILITY)-------------------------------------
+	
+	private float calculateCost(Order order) {
+		
+		float orderCost = 0f;
+		
+		HashMap<String, Integer> orderedItems = order.getOrderedItems();
+		ArrayList<Item> menu = getMenu();
+		HashMap<String, Float> menuRate = new HashMap<>();
+		
+		for(Item item : menu) 
+			menuRate.put(item.itemId, item.cost);
+		
+		for(Entry<String, Integer> orderedItem : orderedItems.entrySet()) 
+			orderCost += menuRate.get(orderedItem.getKey());
+				
+		return orderCost;
+	}
+	
+	private ArrayList<Order> getAllOldOrders(){
+		ArrayList<Order> allOrders = new ArrayList<>();
+		JSONArray allOrdersAsJSON = daoService.readJSONFile("src/main/resources/orders.json", "orders");
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		for(Object oldOrder : allOrdersAsJSON) {
+			
+			try {
+				Order thisOrder = objectMapper.readValue(oldOrder.toString(),Order.class);
+				allOrders.add(thisOrder);
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return allOrders;
 	}
 }

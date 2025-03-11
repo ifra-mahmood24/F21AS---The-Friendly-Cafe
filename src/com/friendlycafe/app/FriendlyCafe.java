@@ -24,12 +24,14 @@ import java.util.List;
 
 import com.friendlycafe.pojo.Customer;
 import com.friendlycafe.pojo.Item;
+import com.friendlycafe.controller.CafeController;
+import com.friendlycafe.dtoservice.CafeService;
+import com.friendlycafe.dtoservice.DataService;
 import com.friendlycafe.exception.CustomerFoundException;
 import com.friendlycafe.exception.InvalidMailFormatException;
 import com.friendlycafe.pojo.Beverage;
 import com.friendlycafe.pojo.Dessert;
-import com.friendlycafe.service.DataService;
-import com.friendlycafe.service.CafeService;
+
 import java.util.*;
 
 import javax.swing.*;
@@ -66,11 +68,13 @@ public class FriendlyCafe {
 		appLogger.info(" ----- WELCOME TO THE FRIENDLY CAFE ----- ");
 
 		//Call services
-		DataService service = new DataService();
-		CafeService service2 = new CafeService();
+		DataService dataService = new DataService();
+		CafeService cafeService = new CafeService();
+		
+		CafeController cafeController = new CafeController();
 
 		//Get Menu from JSON file
-		ArrayList<Item> menu = service.getMenu();
+		ArrayList<Item> menu = dataService.getMenu();
 		
 		// Calling the custom renderer for JList
 		ItemListRenderer itemRenderer = new FriendlyCafe().new ItemListRenderer();
@@ -107,7 +111,7 @@ public class FriendlyCafe {
 		JFrame frame = new JFrame();
 		frame.setTitle("The Friendly cafe");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(600, 500));
+        frame.setPreferredSize(new Dimension(1000, 1000));
 
 		//Main panel with card layout
 		JPanel mainPanel = new JPanel(new CardLayout());
@@ -125,7 +129,7 @@ public class FriendlyCafe {
 		JTextField mailId = new JTextField();
 		mailId.setPreferredSize(new Dimension(380,20));
 		homePanel.setAutoscrolls(true);
-		homePanel.setPreferredSize(new Dimension(500,500));
+		homePanel.setPreferredSize(new Dimension(900,900));
 		homePanel.setBackground(Color.CYAN);
 		homePanel.add(welcomeLabel);
 		homePanel.add(customerNameLabel);
@@ -274,7 +278,7 @@ public class FriendlyCafe {
 		JPanel buttonPanel = new JPanel();
 		JButton foodButton = new JButton("Food Items");
 		JButton beverageButton = new JButton("Beverage Items");
-		JButton dessertButton = new JButton("Dessert Items");
+		JButton dessertButton = new JButton("Dessertt Items");
 
 		//checkout button
 		JButton checkoutButton = new JButton("Checkout");
@@ -297,22 +301,24 @@ public class FriendlyCafe {
 
         dessertButton.addActionListener(e -> {
             CardLayout cl = (CardLayout) mainPanel.getLayout();
-            cl.show(mainPanel, "DESSERT");
+            cl.show(mainPanel, "DESSERTT");
         });
 
 		checkoutButton.addActionListener(e -> {
 			CardLayout cl = (CardLayout) mainPanel.getLayout();
 			cl.show(mainPanel, "CHECKOUT");
 			try {
-			if(!service.checkCustomer(mailId.getText()))
-				service.saveCustomerDetails(customerName.getText().toString(), mailId.getText().toString());
-			HashMap<String, Integer> orderWithPossibleDiscounts = service2.applyDiscount(orderingItem);
-			service.saveOrder(mailId.getText(), orderWithPossibleDiscounts);
+			if(!dataService.checkCustomer(mailId.getText()))
+				dataService.saveCustomerDetails(customerName.getText().toString(), mailId.getText().toString());
 			}catch(CustomerFoundException ex) {
 				ex.printStackTrace();
 			}catch(InvalidMailFormatException ex) {
 				ex.printStackTrace();
 			}
+			HashMap<String, Integer> offeredItems = cafeService.applyDiscount(orderingItem);
+			boolean isOffered = offeredItems.size() > 0;
+
+			cafeController.saveOrder(mailId.getText(), orderingItem, isOffered, offeredItems);			
 
 		});
 
@@ -325,7 +331,7 @@ public class FriendlyCafe {
 		
 		frame.add(contentPanel);
 		frame.setBounds(50, 50, 500, 500);
-		frame.setPreferredSize(new Dimension(500,300));
+		frame.setPreferredSize(new Dimension(600,300));
 		frame.pack();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
@@ -339,7 +345,7 @@ public class FriendlyCafe {
 		
 		
 		
-		// service.generateReport();
+		// dataService.generateReport();
 		
 		appLogger.info("----- THANKS, VISIT AGAIN -----");
 	}

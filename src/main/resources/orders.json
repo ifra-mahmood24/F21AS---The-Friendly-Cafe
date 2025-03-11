@@ -1,477 +1,56 @@
 {
   "orders" : [ {
-    "orderId" : "ORD45351628",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-06T10:26:47.644118",
-    "orderedItems" : {
-      "F002" : 1,
-      "F003" : 2,
-      "F004" : 1,
-      "F005" : 2
-    }
-  }, {
-    "orderId" : "ORD1673993802",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-06T09:24:58.112479800",
-    "orderedItems" : {
-      "F002" : 1,
-      "F003" : 2,
-      "F004" : 1,
-      "F005" : 2
-    }
-  }, {
-    "orderId" : "ORD-1202722448",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-06T02:22:46.426037",
-    "orderedItems" : {
-      "F002" : 1,
-      "F003" : 2,
-      "F004" : 1,
-      "F005" : 2
-    }
-  }, {
-    "orderId" : "ORD-493336399",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-06T02:22:15.915565",
-    "orderedItems" : {
-      "F002" : 1,
-      "F003" : 2,
-      "F004" : 1,
-      "F005" : 2
-    }
-  }, {
-    "orderId" : "ORD-168700689",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-06T02:21:53.180659",
-    "orderedItems" : {
-      "F002" : 1,
-      "F003" : 2,
-      "F004" : 1,
-      "F005" : 2
-    }
-  }, {
-    "orderId" : "ORD-2087803309",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-06T22:08:01.599597",
-    "orderedItems" : {
-      "F002" : 1,
-      "F004" : 3
-    }
-  }, {
-    "orderId" : "ORD-1340324151",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-06T21:51:27.724268",
-    "orderedItems" : {
-      "F001" : 5,
-      "F003" : 9
-    }
-  }, {
-    "orderId" : "ORD1373873398",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-06T21:46:38.995397",
-    "orderedItems" : {
-      "F001" : 2,
-      "F004" : 4
-    }
-  }, {
-    "orderId" : "ORD-883388671",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-06T20:50:45.968756",
+    "orderId" : "ORD-1914399361",
+    "customerId" : "prasanth@as.com",
+    "timeStamp" : "2025-03-11T22:01:49.295411",
     "orderedItems" : {
       "F007" : 1,
-      "F003" : 1
-    }
+      "F001" : 1,
+      "F005" : 1
+    },
+    "offeredItems" : { },
+    "cost" : 7.5,
+    "discounted" : false
   }, {
-    "orderId" : "ORD466608113",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-04T20:49:57.491561",
+    "orderId" : "ORD-87501208",
+    "customerId" : "prasanth@a.com",
+    "timeStamp" : "2025-03-11T21:58:51.545577",
     "orderedItems" : {
-      "F001" : 4,
-      "F003" : 4
-    }
+      "F003" : 1,
+      "B003" : 1
+    },
+    "offeredItems" : { },
+    "cost" : 10.110001,
+    "discounted" : false
   }, {
-    "orderId" : "ORD-1677643907",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-04T20:48:46.502091",
+    "orderId" : "ORD-515495286",
+    "customerId" : "prasanth@sa.com",
+    "timeStamp" : "2025-03-11T21:56:57.965814",
     "orderedItems" : {
-      "F001" : 4,
-      "F003" : 4
-    }
+      "F007" : 1,
+      "F008" : 1
+    },
+    "offeredItems" : {
+      "F007" : 1,
+      "F008" : 1
+    },
+    "cost" : 9.110001,
+    "discounted" : true
   }, {
-    "orderId" : "ORD-1875164726",
-    "customerId" : "dsa@mail.com",
-    "timeStamp" : "2025-03-04T20:47:22.757396",
-    "orderedItems" : {
-      "F001" : 4,
-      "F003" : 4
-    }
+    "orderId" : "ORD793800074",
+    "customerId" : "",
+    "timeStamp" : "2025-03-11T21:47:02.163641",
+    "orderedItems" : { },
+    "offeredItems" : { },
+    "cost" : 1.11,
+    "discounted" : false
   }, {
-    "orderId" : "ORD-347974011",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:49:18.316499600",
-    "orderedItems" : {
-      "D001" : 2,
-      "B903" : 3
-    }
-  }, {
-    "orderId" : "ORD1420889873",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:49:09.864544600",
-    "orderedItems" : {
-      "B501" : 1,
-      "F001" : 3
-    }
-  }, {
-    "orderId" : "ORD2058896572",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:48:59.555124200",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-1601441812",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:48:48.970830400",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD1138532322",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:48:39.954847800",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD776964544",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:48:30.252095700",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD357444930",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:48:19.889037700",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-1826669871",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:47:23.185140400",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD568580826",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:47:06.642518100",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-1677129112",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:46:10.772055300",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD636476700",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:45:55.060532400",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-252984444",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:45:43.467623800",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-90703491",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:45:34.853397300",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-1544327968",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:45:02.633783100",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD153868765",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:44:26.326150800",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD1416708749",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:43:19.914016",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-613258421",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:41:27.776505700",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD1949080325",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:40:38.678775700",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-1310639638",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:40:04.181274700",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-745237426",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:39:46.142272100",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-939917258",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:35:11.861056200",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-812675651",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:33:19.084899100",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-803055765",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:20:15.494460200",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD1646063751",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:18:40.882629",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD1551848845",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:18:13.990425100",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-820034416",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:17:48.293808300",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-1774228295",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:17:09.783738900",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-1657225379",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:16:22.094147500",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-1492400407",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:12:19.178266100",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD1325326713",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T12:36:44.216688400",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD2027612572",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T12:36:02.006064",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD557041632",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T12:35:25.001971300",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-206841620",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T12:35:09.273433800",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-1632988984",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T12:32:58.482374",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD-1433949907",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T12:30:29.302215100",
-    "orderedItems" : {
-      "B501" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD1403635836",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T12:29:33.896303600",
-    "orderedItems" : {
-      "F009" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD851720549",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T12:19:47.533615200",
-    "orderedItems" : {
-      "F001" : 4,
-      "F003" : 4
-    }
-  }, {
-    "orderId" : "ORD-1740630532",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T12:19:06.476418400",
-    "orderedItems" : {
-      "F001" : 4,
-      "F003" : 4
-    }
-  }, {
-    "orderId" : "ORD-2107102338",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T12:13:44.066664600",
-    "orderedItems" : {
-      "F001" : 4,
-      "F003" : 4
-    }
-  }, {
-    "orderId" : "ORD414--1683321865",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:18:13.990425100",
-    "orderedItems" : {
-      "B001" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD414--1549315079",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:18:13.990425100",
-    "orderedItems" : {
-      "B001" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD42--2011267878",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:18:13.990425100",
-    "orderedItems" : {
-      "B001" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD42-1781039315",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:18:13.990425100",
-    "orderedItems" : {
-      "B001" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ORD42-701107022",
-    "customerId" : "dsa@gmail.com",
-    "timeStamp" : "2025-03-04T13:18:13.990425100",
-    "orderedItems" : {
-      "B001" : 4,
-      "F001" : 4
-    }
-  }, {
-    "orderId" : "ODR002",
-    "customerId" : "asd@gmail.com",
-    "timeStamp" : "2025-03-04T13:18:13.990425100",
-    "orderedItems" : {
-      "F002" : 1,
-      "B002" : 1
-    }
-  }, {
-    "orderId" : "ODR002",
-    "customerId" : "asd@gmail.com",
-    "timeStamp" : "2025-03-04T13:18:13.990425100",
-    "orderedItems" : {
-      "F002" : 1,
-      "B002" : 1
-    }
+    "orderId" : "ORD309263808",
+    "customerId" : "",
+    "timeStamp" : "2025-03-11T21:46:15.721413",
+    "orderedItems" : { },
+    "offeredItems" : { },
+    "cost" : 1.11,
+    "discounted" : false
   } ]
 }

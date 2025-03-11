@@ -2,7 +2,7 @@ package com.friendlycafe.pojo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.friendlycafe.service.DataService;
+import com.friendlycafe.dtoservice.DataService;
 
 public class Dessert extends Item {
      
