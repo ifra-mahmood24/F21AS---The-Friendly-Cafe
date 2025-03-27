@@ -14,16 +14,19 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import com.friendlycafe.pojo.Customer;
 import com.friendlycafe.pojo.Item;
+import com.friendlycafe.pojo.Order;
 import com.friendlycafe.controller.CafeController;
 import com.friendlycafe.dtoservice.CafeService;
 import com.friendlycafe.dtoservice.DataService;
@@ -45,7 +48,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FriendlyCafe {
 
-	private static final Logger appLogger = LoggerFactory.getLogger(FriendlyCafe.class);
+	private static final Logger logger = Logger.getLogger(FriendlyCafe.class.getName());
+	
 
 	// Custom cell renderer to display item name and cost in JList
 	class ItemListRenderer extends JLabel implements ListCellRenderer<Item> {
@@ -62,50 +66,53 @@ public class FriendlyCafe {
 			return this;
 		}
 	}
+	
+	
 	public static void main(String[] args) {
 
+		initiateLogger();
+
 		
-		appLogger.info(" ----- WELCOME TO THE FRIENDLY CAFE ----- ");
+		logger.info(" ----- WELCOME TO THE FRIENDLY CAFE ----- ");
 
 		//Call services
 		DataService dataService = new DataService();
 		CafeService cafeService = new CafeService();
-		
 		CafeController cafeController = new CafeController();
-
+		ArrayBlockingQueue<Order> orderQueue = new ArrayBlockingQueue<>(100);
+		
 		//Get Menu from JSON file
 		ArrayList<Item> menu = dataService.getMenu();
 		
-		// Calling the custom renderer for JList
-		ItemListRenderer itemRenderer = new FriendlyCafe().new ItemListRenderer();
 
 		//Initiate list for total costs display
 		ArrayList<Float> orderList = new ArrayList<>();
 
-		//Sum of orderList will be stored here
-		double totalCost[];
-		totalCost = new double[1];
-
-		//Save order items and their quantity
-		HashMap<String, Integer> orderingItem = new HashMap<>();
-		
 		//Dividing menu items into its categories
 		List<Item> foodItems = new ArrayList<>();
         List<Item> beverageItems = new ArrayList<>();
         List<Item> dessertItems = new ArrayList<>();
 
-        for (Item item : menu) {
-            if (item instanceof Beverage) {
+		//Save order items and their quantity
+		HashMap<String, Integer> orderingItem = new HashMap<>();
+
+		
+		// Calling the custom renderer for JList
+		ItemListRenderer itemRenderer = new FriendlyCafe().new ItemListRenderer();
+
+		//Sum of orderList will be stored here
+		double totalCost[] = new double[1];
+		
+
+        for (Item item : menu)         	
+            if (item instanceof Beverage) 
                 beverageItems.add(item);
-            } else if (item instanceof Dessert) {
+            else if (item instanceof Dessert) 
                 dessertItems.add(item);
-            } else {
+            else 
                 foodItems.add(item);
-            }
-        }
 
-
-		// GUI Start
+		// --------------------------------------------- GUI Start ---------------------------------------------
 
 		//GUI window
 		JFrame frame = new JFrame();
@@ -127,6 +134,8 @@ public class FriendlyCafe {
 		customerName.setPreferredSize(new Dimension(350,20));
 		JLabel mailLabel = new JLabel("Mail ID : ");
 		JTextField mailId = new JTextField();
+		JLabel processLabel = new JLabel("Your order is in the queue..");
+		processLabel.setPreferredSize(new Dimension(400,20));
 		mailId.setPreferredSize(new Dimension(380,20));
 		homePanel.setAutoscrolls(true);
 		homePanel.setPreferredSize(new Dimension(900,900));
@@ -161,9 +170,6 @@ public class FriendlyCafe {
 					else
 						orderingItem.put(selectedItem.itemId, 1); // Default quantity value is 1 at first click
 					
-					appLogger.info("{}",orderingItem);
-					appLogger.info("{}", orderList);
-					appLogger.info("{}", orderList.stream().mapToDouble(Float::doubleValue).sum());
 					totalCost[0] = orderList.stream().mapToDouble(Float::doubleValue).sum(); // Calculate sum of orderList
 					totalCostFood.setText(String.format("%.2f",totalCost[0])); // Show current total cost
 				}
@@ -194,11 +200,8 @@ public class FriendlyCafe {
 						orderingItem.put(selectedItem.itemId, orderingItem.get(selectedItem.itemId) + 1); //Increment old quantity value at each click
 					else
 						orderingItem.put(selectedItem.itemId, 1); // Default quantity value is 1 at first click
-					appLogger.info("{}",orderingItem);
-					appLogger.info("{}", orderList);
-					appLogger.info("{}", orderList.stream().mapToDouble(Float::doubleValue).sum());
 					totalCost[0] = orderList.stream().mapToDouble(Float::doubleValue).sum(); // Calculate sum of orderList
-					appLogger.info(String.format("%.2f",totalCost[0]));
+					logger.info(String.format("%.2f",totalCost[0]));
 					totalCostBeverage.setText(String.format("%.2f",totalCost[0])); // Show current total cost
 				}
 			
@@ -228,11 +231,8 @@ public class FriendlyCafe {
 						orderingItem.put(selectedItem.itemId, orderingItem.get(selectedItem.itemId) + 1);
 					else
 						orderingItem.put(selectedItem.itemId, 1);// Default quantity value is 1 at first click
-					appLogger.info("{}",orderingItem);
-					appLogger.info("{}", orderList);
-					appLogger.info("{}", orderList.stream().mapToDouble(Float::doubleValue).sum());
 					totalCost[0] = orderList.stream().mapToDouble(Float::doubleValue).sum(); // Calculate sum of orderList
-					appLogger.info(String.format("%.2f",totalCost[0]));
+					logger.info(String.format("%.2f",totalCost[0]));
 					totalCostDessert.setText(String.format("%.2f",totalCost[0])); // Show current total cost
 				}
 			
@@ -268,7 +268,6 @@ public class FriendlyCafe {
 		
 		checkoutPanel.add(totalCostLabel);
 
-		
 
 		//Fifth card of main panel is checkout panel
 		mainPanel.add(checkoutPanel, "CHECKOUT");
@@ -318,7 +317,18 @@ public class FriendlyCafe {
 			HashMap<String, Integer> offeredItems = cafeService.applyDiscount(orderingItem);
 			boolean isOffered = offeredItems.size() > 0;
 
-			cafeController.saveOrder(mailId.getText(), orderingItem, isOffered, offeredItems);			
+			Order currentOrder = cafeController.saveAsActiveOrder(mailId.getText(), orderingItem, isOffered, offeredItems);	
+			
+			// save order in queue
+			orderQueue.add(currentOrder);
+			System.out.println("ADDED TO ORDERQUEUE ");
+			System.out.println("TAKING ORDER");
+			cafeService.takeOrder(orderQueue);
+			checkoutPanel.add(processLabel);
+			checkoutPanel.remove(totalCostLabel);
+			
+			// Repeat taking the order as much as possible - either until orderQueue is empty or reaching the limit of orderQueue
+			//PROCESS OVER IN RELATION TO GUI	
 
 		});
 
@@ -336,17 +346,47 @@ public class FriendlyCafe {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		
-		// GUI End
+		// ------------------------------------------------------------ GUI End ------------------------------------------------------------			
+		
 
+
+		// wait for a server to take up the order
 		
 		
-		// GET VALUES FROM GUI(Customer Name, Email, order)		
-		//Checking whether the customer is already existing in our records
+		// process the order...
 		
+
+//		 dataService.generateReport();
 		
+		logger.info("--------------------------------------------- THANKS, VISIT AGAIN --------------------------------------------------");
 		
-		// dataService.generateReport();
-		
-		appLogger.info("----- THANKS, VISIT AGAIN -----");
 	}
+
+
+
+	
+	//LOGGING IDEAS - DO THE BELOW IN SEPARATE SINGLETON CLASS
+	
+	// Create a separate singleton class to initiateLogger
+	// use that class's getInstance method to start the initiation and handle the logger
+
+	private static void initiateLogger() {
+        
+		String logFileName = "app.log";
+        File log = new File(logFileName);
+        
+        if (log.exists())   log.delete();  
+        
+        try {
+		FileHandler fileHandler = new FileHandler(logFileName, true); 
+        fileHandler.setFormatter(new SimpleFormatter()); 
+        logger.addHandler(fileHandler); 
+        fileHandler.flush();
+        fileHandler.close();
+
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+	}
+	
 }

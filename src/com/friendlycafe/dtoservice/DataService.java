@@ -18,8 +18,7 @@ import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.*;
 
 import com.friendlycafe.daoservice.DataAccessService;
 import com.friendlycafe.exception.CustomerFoundException;
@@ -41,7 +40,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class DataService {
 	Map<String, Map<String,String>> customers = new HashMap<>();
 
-	private static final Logger logger = LoggerFactory.getLogger(DataService.class);
+	private static final Logger logger = Logger.getLogger(DataService.class.getName());
 
 	public static final ArrayList<Item> menuList = new ArrayList<>();
 	private final DataAccessService daoService = new DataAccessService();
@@ -120,6 +119,7 @@ public class DataService {
 	public Order saveOrder(Order order) {
 		
 		
+		logger.info("ON MY WAY TO SAVE THE ORDER!");
 		float orderCost = calculateCost(order);
 		order.setCost(orderCost);
 		
@@ -128,7 +128,7 @@ public class DataService {
 		
 		//this should go to DAOService
 		daoService.writeJSONFileForOrders("src/main/resources/orders.json", allOldOrders);
-
+		logger.info("ORDER SAVED!");
 		return order;
 	}
 
@@ -257,6 +257,38 @@ public class DataService {
 
 	}
 	
+	/**
+	 * @param order
+	 * @return
+	 */
+	public Order saveAsActiveOrder(Order order) {
+		// TODO Auto-generated method stub
+		
+		logger.info("ON MY WAY TO SAVE THE ACTIVE ORDER!");
+		float orderCost = calculateCost(order);
+		order.setCost(orderCost);
+		
+		ArrayList<Order> allOldOrders = getAllActiveOrders();
+		allOldOrders.add(order);
+		
+		//this should go to DAOService
+		saveAsActiveOrders(allOldOrders);
+		logger.info("ACTIVE ORDER SAVED!");
+		return order;
+	}
+	
+	// remove from activeorder.json and add to order.json
+	public void orderServed(Order currentOrder) {
+		//saving the order details in orders.json 
+		saveOrder(currentOrder);
+		
+		ArrayList<Order> allActiveOrders = getAllActiveOrders();
+
+		//removing the order data from activeOrders.json
+		if(allActiveOrders.contains(currentOrder)) allActiveOrders.remove(currentOrder);
+		saveAsActiveOrders(allActiveOrders);
+	}
+	
 	
 //	-----------------------------INTERNAL HELPER METHOD(CODE READABILITY)-------------------------------------
 	
@@ -271,9 +303,11 @@ public class DataService {
 		for(Item item : menu) 
 			menuRate.put(item.itemId, item.cost);
 		
-		for(Entry<String, Integer> orderedItem : orderedItems.entrySet()) 
-			orderCost += menuRate.get(orderedItem.getKey());
-				
+		for(Entry<String, Integer> orderedItem : orderedItems.entrySet()) {
+			logger.info("KEY: "+orderedItem.getKey()  +" MENURATE: "+ menuRate.get(orderedItem.getKey()) +" VALUE : "+orderedItem.getValue());
+			orderCost += (menuRate.get(orderedItem.getKey())) * orderedItem.getValue();
+		}
+		logger.info("RETURNING... ->"+orderCost);
 		return orderCost;
 	}
 	
@@ -296,4 +330,36 @@ public class DataService {
 
 		return allOrders;
 	}
+
+	
+	private ArrayList<Order> getAllActiveOrders(){
+		ArrayList<Order> allOrders = new ArrayList<>();
+		JSONArray allOrdersAsJSON = daoService.readJSONFile("src/main/resources/activeOrders.json", "orders");
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		for(Object oldOrder : allOrdersAsJSON) {
+			
+			try {
+				Order thisOrder = objectMapper.readValue(oldOrder.toString(),Order.class);
+				allOrders.add(thisOrder);
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return allOrders;
+	}
+
+
+	/**
+	 * @param allActiveOrders
+	 */
+	private void saveAsActiveOrders(ArrayList<Order> allActiveOrders) {
+		// TODO Auto-generated method stub
+		daoService.writeJSONFileForOrders("src/main/resources/activeOrders.json", allActiveOrders);
+
+	}
+
 }
