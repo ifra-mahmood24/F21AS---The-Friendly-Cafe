@@ -10,12 +10,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 
 import java.util.logging.*;
 
@@ -24,22 +21,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import com.friendlycafe.pojo.Customer;
 import com.friendlycafe.pojo.Item;
 import com.friendlycafe.pojo.Order;
 import com.friendlycafe.controller.CafeController;
-import com.friendlycafe.dtoservice.CafeService;
-import com.friendlycafe.dtoservice.DataService;
-import com.friendlycafe.exception.CustomerFoundException;
-import com.friendlycafe.exception.InvalidMailFormatException;
+
 import com.friendlycafe.pojo.Beverage;
 import com.friendlycafe.pojo.Dessert;
 
-import java.util.*;
-
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.table.DefaultTableModel;
 
 
 
@@ -76,13 +65,11 @@ public class FriendlyCafe {
 		logger.info(" ----- WELCOME TO THE FRIENDLY CAFE ----- ");
 
 		//Call services
-		DataService dataService = new DataService();
-		CafeService cafeService = new CafeService();
 		CafeController cafeController = new CafeController();
 		ArrayBlockingQueue<Order> orderQueue = new ArrayBlockingQueue<>(100);
 		
 		//Get Menu from JSON file
-		ArrayList<Item> menu = dataService.getMenu();
+		ArrayList<Item> menu = cafeController.getMenu();
 		
 
 		//Initiate list for total costs display
@@ -306,24 +293,20 @@ public class FriendlyCafe {
 		checkoutButton.addActionListener(e -> {
 			CardLayout cl = (CardLayout) mainPanel.getLayout();
 			cl.show(mainPanel, "CHECKOUT");
-			try {
-			if(!dataService.checkCustomer(mailId.getText()))
-				dataService.saveCustomerDetails(customerName.getText().toString(), mailId.getText().toString());
-			}catch(CustomerFoundException ex) {
-				ex.printStackTrace();
-			}catch(InvalidMailFormatException ex) {
-				ex.printStackTrace();
-			}
-			HashMap<String, Integer> offeredItems = cafeService.applyDiscount(orderingItem);
-			boolean isOffered = offeredItems.size() > 0;
 
-			Order currentOrder = cafeController.saveAsActiveOrder(mailId.getText(), orderingItem, isOffered, offeredItems);	
+			if(!cafeController.checkCustomer(mailId.getText()))
+				cafeController.saveCustomerDetails(customerName.getText().toString(), mailId.getText().toString());
+			
+			double billCost = cafeController.getTotalCost(orderingItem);
+			boolean isOffered = billCost != cafeController.getDiscountedCost(billCost) ;
+
+			Order currentOrder = cafeController.saveAsActiveOrder(mailId.getText(), orderingItem, isOffered);	
 			
 			// save order in queue
 			orderQueue.add(currentOrder);
 			System.out.println("ADDED TO ORDERQUEUE ");
 			System.out.println("TAKING ORDER");
-			cafeService.takeOrder(orderQueue);
+			cafeController.takeOrder(orderQueue);
 			checkoutPanel.add(processLabel);
 			checkoutPanel.remove(totalCostLabel);
 			
@@ -356,14 +339,11 @@ public class FriendlyCafe {
 		// process the order...
 		
 
-//		 dataService.generateReport();
+		 cafeController.generateReport();
 		
 		logger.info("--------------------------------------------- THANKS, VISIT AGAIN --------------------------------------------------");
 		
 	}
-
-
-
 	
 	//LOGGING IDEAS - DO THE BELOW IN SEPARATE SINGLETON CLASS
 	

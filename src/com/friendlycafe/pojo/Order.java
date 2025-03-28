@@ -17,7 +17,7 @@ public class Order {
 	private HashMap<String, Integer> orderedItems;
 	private boolean isDiscounted;
 	private HashMap<String, Integer> offeredItems;
-	private float cost;
+	private double cost;
 
 
 	/**
@@ -103,6 +103,25 @@ public class Order {
 	public Order() {
 		// TODO Auto-generated constructor stub
 	}
+
+/**
+	 * @param string
+	 * @param customerMailId
+	 * @param timeStamp2
+	 * @param orderedItems2
+	 * @param isOffered
+	 */
+	public Order(String orderId, String customerMailId, String timeStamp2, HashMap<String, Integer> orderedItems2,
+			boolean isOffered) {
+			this.orderId = orderId;
+			this.timeStamp = timeStamp2;
+			this.customerId = customerMailId;
+			this.isDiscounted = isOffered;
+			
+	}
+	
+
+
 
 //	-------GETTERS AND SETTERS START---------
 /**
@@ -192,14 +211,14 @@ public class Order {
 	/**
 	 * @return the cost
 	 */
-	public float getCost() {
+	public double getCost() {
 		return cost;
 	}
 
 	/**
 	 * @param cost the cost to set
 	 */
-	public void setCost(float cost) {
+	public void setCost(double cost) {
 		this.cost = cost;
 	}
 
