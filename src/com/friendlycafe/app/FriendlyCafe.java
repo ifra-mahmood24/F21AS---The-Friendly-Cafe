@@ -14,16 +14,14 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import com.friendlycafe.pojo.Customer;
 import com.friendlycafe.pojo.Item;
+import com.friendlycafe.pojo.Order;
 import com.friendlycafe.controller.CafeController;
 import com.friendlycafe.dtoservice.CafeService;
 import com.friendlycafe.dtoservice.DataService;
@@ -318,7 +316,35 @@ public class FriendlyCafe {
 			HashMap<String, Integer> offeredItems = cafeService.applyDiscount(orderingItem);
 			boolean isOffered = offeredItems.size() > 0;
 
-			cafeController.saveOrder(mailId.getText(), orderingItem, isOffered, offeredItems);			
+			cafeController.saveOrder(mailId.getText(), orderingItem, isOffered, offeredItems);
+			
+			// Create the order
+			Random random = new Random();
+			Integer orderId = random.nextInt();
+			String timeStamp = LocalDateTime.now().toString();
+			Order order = new Order("ORD"+ orderId.toString(), mailId.getText(), timeStamp, orderingItem);
+			totalCost[0] = 0;
+			// Add to temporary station
+			if (dataService.isTemporaryStationFull()) {
+				// JOptionPane.showMessageDialog(frame, 
+				// 	"Temporary station is full! Please wait for servers to pick up existing orders.",
+				// 	"Station Full", 
+				// 	JOptionPane.WARNING_MESSAGE);
+				appLogger.info("Temporary station is full");
+			} else {
+				boolean added = dataService.addOrderToTemporaryStation(order);
+				if (added) {
+					// JOptionPane.showMessageDialog(frame, 
+					// 	"Order placed successfully! Current station queue: " + dataService.getTemporaryStationSize(),
+					// 	"Order Placed", 
+					// 	JOptionPane.INFORMATION_MESSAGE);
+					appLogger.info("Order placed, current queue: {}", dataService.getTemporaryStationSize());
+					List<Order> orders = dataService.getAllTemporaryStationOrders();
+					appLogger.info("Order placed, current queue: {}", orders);
+				}
+			}
+			
+			cafeController.saveOrder(mailId.getText(), orderingItem, isOffered, offeredItems);
 
 		});
 
@@ -337,15 +363,6 @@ public class FriendlyCafe {
 		frame.setLocationRelativeTo(null);
 		
 		// GUI End
-
-		
-		
-		// GET VALUES FROM GUI(Customer Name, Email, order)		
-		//Checking whether the customer is already existing in our records
-		
-		
-		
-		// dataService.generateReport();
 		
 		appLogger.info("----- THANKS, VISIT AGAIN -----");
 	}

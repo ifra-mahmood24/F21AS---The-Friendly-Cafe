@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -32,6 +33,7 @@ import com.friendlycafe.pojo.Customer;
 import com.friendlycafe.pojo.Item;
 import com.friendlycafe.pojo.Order;
 import com.friendlycafe.pojo.Report;
+import com.friendlycafe.pojo.TemporaryStation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -46,6 +48,8 @@ public class DataService {
 	public static final ArrayList<Item> menuList = new ArrayList<>();
 	private final DataAccessService daoService = new DataAccessService();
 	
+	private final TemporaryStation temporaryStation = new TemporaryStation();
+
 	public ArrayList<Item> getMenu() {
 		try {
 
@@ -190,7 +194,6 @@ public class DataService {
 		
 	}
 	
-	
 	public void generateReport() {
 		ArrayList<Report> allOrderedItems  = new ArrayList<>();
 		ArrayList<Item> menu = getMenu();
@@ -257,7 +260,31 @@ public class DataService {
 
 	}
 	
-	
+//	-----------------------------TEMPORARY STATION METHODS (CODE READABILITY)-------------------------------------
+	public boolean addOrderToTemporaryStation(Order order) {
+		return temporaryStation.addOrder(order);
+	}
+
+	public Order getNextOrderFromStation() {
+		return temporaryStation.getNextOrder();
+	}
+
+	public boolean isTemporaryStationFull() {
+		return temporaryStation.isFull();
+	}
+
+	public boolean isTemporaryStationEmpty() {
+		return temporaryStation.isEmpty();
+	}
+
+	public int getTemporaryStationSize() {
+		return temporaryStation.getCurrentSize();
+	}
+
+	public List<Order> getAllTemporaryStationOrders() {
+    	return temporaryStation.getAllOrders();
+	}
+
 //	-----------------------------INTERNAL HELPER METHOD(CODE READABILITY)-------------------------------------
 	
 	private float calculateCost(Order order) {
