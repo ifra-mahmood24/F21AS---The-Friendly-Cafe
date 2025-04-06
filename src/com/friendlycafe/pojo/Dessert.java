@@ -1,7 +1,5 @@
 package com.friendlycafe.pojo;
 
-import com.friendlycafe.dtoservice.DataService;
-
 public class Dessert extends Item {
      
     public boolean sugarFree;

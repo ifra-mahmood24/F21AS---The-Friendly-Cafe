@@ -1,14 +1,12 @@
 /**
  * Author 			: prasanths 
- * Last Modified By : prasanths
+ * Last Modified By : joel
  */
 package com.friendlycafe.pojo;
 
 import java.util.Objects;
 
-/**
- * 
- */
+
 public class Report {
 
 
