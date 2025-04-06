@@ -1,12 +1,7 @@
 package com.friendlycafe.pojo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.friendlycafe.service.DataService;
 
 public class Dessert extends Item {
      
-    private static final Logger dessertLogger = LoggerFactory.getLogger(DataService.class);
     public boolean sugarFree;
 	
 	
@@ -29,7 +24,6 @@ public class Dessert extends Item {
 	public void isSugarFree() {
         if (this.sugarFree == false)
         {
-            dessertLogger.info("This item is not sugar-free");
         }
     }
 }
