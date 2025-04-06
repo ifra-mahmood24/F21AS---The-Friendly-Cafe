@@ -1,16 +1,15 @@
 package com.friendlycafe.pojo;
 
 public class Dessert extends Item {
-     
-    public boolean sugarFree;
-	
-	
+
+	public boolean sugarFree;
+
 	/**
 	 * @param itemId
 	 * @param itemName
 	 * @param description
 	 * @param cost
-     * @param sugarFree
+	 * @param sugarFree
 	 */
 	public Dessert(String itemId, String itemName, String description, Float cost, boolean sugarFree) {
 		// TODO Auto-generated constructor stub
@@ -22,8 +21,7 @@ public class Dessert extends Item {
 	}
 
 	public void isSugarFree() {
-        if (this.sugarFree == false)
-        {
-        }
-    }
+		if (this.sugarFree == false) {
+		}
+	}
 }

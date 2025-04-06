@@ -6,7 +6,6 @@ package com.friendlycafe.pojo;
 
 import java.util.HashMap;
 
-
 public class Order {
 	private String orderId;
 	private String customerId;
@@ -15,7 +14,6 @@ public class Order {
 	private boolean isDiscounted;
 	private HashMap<String, Integer> offeredItems;
 	private double cost;
-
 
 	/**
 	 * @param orderId2
@@ -30,9 +28,7 @@ public class Order {
 		this.timeStamp = timeStamp;
 		this.orderedItems = orderedItems;
 	}
-	
-	
-		
+
 	/**
 	 * @param customerId
 	 * @param orderedItems
@@ -47,8 +43,6 @@ public class Order {
 		this.isDiscounted = isDiscounted;
 		this.offeredItems = offeredItems;
 	}
-
-
 
 	/**
 	 * @param orderId
@@ -68,8 +62,6 @@ public class Order {
 		this.isDiscounted = isDiscounted;
 		this.offeredItems = offeredItems;
 	}
-
-
 
 	/**
 	 * @param orderId
@@ -92,8 +84,6 @@ public class Order {
 		this.cost = cost;
 	}
 
-
-
 	/**
 	 * 
 	 */
@@ -101,7 +91,7 @@ public class Order {
 		// TODO Auto-generated constructor stub
 	}
 
-/**
+	/**
 	 * @param string
 	 * @param customerMailId
 	 * @param timeStamp2
@@ -110,39 +100,34 @@ public class Order {
 	 */
 	public Order(String orderId, String customerMailId, String timeStamp2, HashMap<String, Integer> orderedItems2,
 			boolean isOffered) {
-			this.orderId = orderId;
-			this.timeStamp = timeStamp2;
-			this.customerId = customerMailId;
-			this.isDiscounted = isOffered;
-			
+		this.orderId = orderId;
+		this.timeStamp = timeStamp2;
+		this.customerId = customerMailId;
+		this.isDiscounted = isOffered;
+
 	}
-	
 
+	/**
+	 * @param orderId
+	 * @param customerId
+	 * @param timeStamp
+	 * @param orderedItems
+	 * @param isDiscounted
+	 * @param cost
+	 */
+	public Order(String orderId, String customerId, String timeStamp, HashMap<String, Integer> orderedItems,
+			boolean isDiscounted, double cost) {
+		super();
+		this.orderId = orderId;
+		this.customerId = customerId;
+		this.timeStamp = timeStamp;
+		this.orderedItems = orderedItems;
+		this.isDiscounted = isDiscounted;
+		this.cost = cost;
+	}
 
-
-/**
- * @param orderId
- * @param customerId
- * @param timeStamp
- * @param orderedItems
- * @param isDiscounted
- * @param cost
- */
-public Order(String orderId, String customerId, String timeStamp, HashMap<String, Integer> orderedItems,
-		boolean isDiscounted, double cost) {
-	super();
-	this.orderId = orderId;
-	this.customerId = customerId;
-	this.timeStamp = timeStamp;
-	this.orderedItems = orderedItems;
-	this.isDiscounted = isDiscounted;
-	this.cost = cost;
-}
-
-
-
-//	-------GETTERS AND SETTERS START---------
-/**
+	// -------GETTERS AND SETTERS START---------
+	/**
 	 * @return the orderId
 	 */
 	public String getOrderId() {
@@ -240,6 +225,6 @@ public Order(String orderId, String customerId, String timeStamp, HashMap<String
 		this.cost = cost;
 	}
 
-//	-------GETTERS AND SETTERS END---------
-	
+	// -------GETTERS AND SETTERS END---------
+
 }

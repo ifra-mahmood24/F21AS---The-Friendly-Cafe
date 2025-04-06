@@ -18,8 +18,7 @@ import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.*;
 
 import com.friendlycafe.daoservice.DataAccessService;
 import com.friendlycafe.exception.CustomerFoundException;
@@ -41,86 +40,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class DataService {
 	Map<String, Map<String,String>> customers = new HashMap<>();
 
-	private static final Logger logger = LoggerFactory.getLogger(DataService.class);
+	private static final Logger logger = Logger.getLogger(DataService.class.getName());
 
-	public static final ArrayList<Item> menuList = new ArrayList<>();
-	private final DataAccessService daoService = new DataAccessService();
-	
-	public ArrayList<Item> getMenu() {
-		try {
+	private DataAccessService daoService = new DataAccessService();
+	private CafeService cafeService = new CafeService();
 
-
-			JSONArray foodItemListAsObject = daoService.readJSONFile("src/main/resources/foodMenu.json", "foodItems");
-			JSONArray beverageItemListAsObject = daoService.readJSONFile("src/main/resources/beverageMenu.json", "beverageItems");
-			JSONArray dessertItemListAsObject = daoService.readJSONFile("src/main/resources/dessertMenu.json", "dessertItems");
-
-			ArrayList<Item> foodItemList = new ArrayList<>();
-			ArrayList<Item> beverageItemList = new ArrayList<>();
-			ArrayList<Item> dessertItemList = new ArrayList<>();
-
-			
-			//Reading Food Menu List 
-			for(int index = 0; index < foodItemListAsObject.length(); index++) {
-				
-				JSONObject JsonIndex = foodItemListAsObject.getJSONObject(index);
-				
-				String itemId = JsonIndex.getString("itemId");
-				String itemName = JsonIndex.getString("name");
-				String description = JsonIndex.getString("description");
-				Float cost = Float.parseFloat(JsonIndex.getString("cost"));
-				
-				Item foodItem = new Item(itemId, itemName, description, cost);
-				foodItemList.add(foodItem);
-			}
-			
-			//Reading Beverage Menu List 
-			for(int index = 0; index < beverageItemListAsObject.length(); index++) {
-				
-				JSONObject JsonIndex = beverageItemListAsObject.getJSONObject(index);
-				
-				String itemId = JsonIndex.getString("itemId");
-				String itemName = JsonIndex.getString("name");
-				String description = JsonIndex.getString("description");
-				Float cost = Float.parseFloat(JsonIndex.getString("cost"));
-				String temp = JsonIndex.getString("temp");
-				String size = JsonIndex.getString("size");
-				//Possible exception for Temp or size value not matching with enum type
-				Beverage beverage = new Beverage(itemId, itemName, description, cost, TempType.valueOf(temp), DrinkSize.valueOf(size));
-				
-				beverageItemList.add(beverage);
-			}
-
-			//Reading Dessert List
-			for (int index = 0; index < dessertItemListAsObject.length(); index++) {
-
-				JSONObject JsonIndex = dessertItemListAsObject.getJSONObject(index);
-
-				String itemId = JsonIndex.getString("itemId");
-				String itemName = JsonIndex.getString("name");
-				String description = JsonIndex.getString("description");
-				Float cost = Float.parseFloat(JsonIndex.getString("cost"));
-				Boolean sugarFree = JsonIndex.getBoolean("sugarFree");
-
-				Dessert dessert = new Dessert(itemId, itemName, description, cost, sugarFree);
-				dessertItemList.add(dessert);
-			}
-
-			menuList.addAll(foodItemList);
-			menuList.addAll(beverageItemList);
-			menuList.addAll(dessertItemList);
-			
-			return menuList;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
 	
 	public Order saveOrder(Order order) {
 		
 		
-		float orderCost = calculateCost(order);
+		logger.info("ON MY WAY TO SAVE THE ORDER!");
+		double orderCost = cafeService.calculateCost(order.getOrderedItems());
 		order.setCost(orderCost);
 		
 		ArrayList<Order> allOldOrders = getAllOldOrders();
@@ -128,7 +58,7 @@ public class DataService {
 		
 		//this should go to DAOService
 		daoService.writeJSONFileForOrders("src/main/resources/orders.json", allOldOrders);
-
+		logger.info("ORDER SAVED!");
 		return order;
 	}
 
@@ -193,7 +123,7 @@ public class DataService {
 	
 	public void generateReport() {
 		ArrayList<Report> allOrderedItems  = new ArrayList<>();
-		ArrayList<Item> menu = getMenu();
+		ArrayList<Item> menu = cafeService.getMenu();
 		ArrayList<Order> todaysOrders = new ArrayList<>();
 		try {	
 			JSONArray ordersListAsObject = daoService.readJSONFile("src/main/resources/orders.json", "orders");
@@ -257,25 +187,43 @@ public class DataService {
 
 	}
 	
+	/**
+	 * @param order
+	 * @return
+	 */
+	public Order saveAsActiveOrder(Order order) {
+		// TODO Auto-generated method stub
+		
+		logger.info("ON MY WAY TO SAVE THE ACTIVE ORDER!");
+		double orderCost = cafeService.calculateCost(order.getOrderedItems());
+		order.setCost(orderCost);
+		
+		ArrayList<Order> allOldOrders = getAllActiveOrders();
+		allOldOrders.add(order);
+		
+		//this should go to DAOService
+		saveAsActiveOrders(allOldOrders);
+		logger.info("ACTIVE ORDER SAVED!");
+		return order;
+	}
+	
+	// remove from activeorder.json and add to order.json
+	public void orderServed(Order currentOrder) {
+		//saving the order details in orders.json 
+		saveOrder(currentOrder);
+		
+		ArrayList<Order> allActiveOrders = getAllActiveOrders();
+
+		//removing the order data from activeOrders.json
+		if(allActiveOrders.contains(currentOrder)) allActiveOrders.remove(currentOrder);
+		saveAsActiveOrders(allActiveOrders);
+	}
+	
+	
 	
 //	-----------------------------INTERNAL HELPER METHOD(CODE READABILITY)-------------------------------------
 	
-	private float calculateCost(Order order) {
-		
-		float orderCost = 0f;
-		
-		HashMap<String, Integer> orderedItems = order.getOrderedItems();
-		ArrayList<Item> menu = getMenu();
-		HashMap<String, Float> menuRate = new HashMap<>();
-		
-		for(Item item : menu) 
-			menuRate.put(item.itemId, item.cost);
-		
-		for(Entry<String, Integer> orderedItem : orderedItems.entrySet()) 
-			orderCost += menuRate.get(orderedItem.getKey());
-				
-		return orderCost;
-	}
+
 	
 	private ArrayList<Order> getAllOldOrders(){
 		ArrayList<Order> allOrders = new ArrayList<>();
@@ -296,4 +244,36 @@ public class DataService {
 
 		return allOrders;
 	}
+
+	
+	private ArrayList<Order> getAllActiveOrders(){
+		ArrayList<Order> allOrders = new ArrayList<>();
+		JSONArray allOrdersAsJSON = daoService.readJSONFile("src/main/resources/activeOrders.json", "orders");
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		for(Object oldOrder : allOrdersAsJSON) {
+			
+			try {
+				Order thisOrder = objectMapper.readValue(oldOrder.toString(),Order.class);
+				allOrders.add(thisOrder);
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return allOrders;
+	}
+
+
+	/**
+	 * @param allActiveOrders
+	 */
+	private void saveAsActiveOrders(ArrayList<Order> allActiveOrders) {
+		// TODO Auto-generated method stub
+		daoService.writeJSONFileForOrders("src/main/resources/activeOrders.json", allActiveOrders);
+
+	}
+
 }

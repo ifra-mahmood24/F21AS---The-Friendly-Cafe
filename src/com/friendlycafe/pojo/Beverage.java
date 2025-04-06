@@ -5,22 +5,22 @@
 package com.friendlycafe.pojo;
 
 public class Beverage extends Item {
- 
+
 	public TempType type;
 	public DrinkSize size;
 	public Boolean isRefill;
-	
+
 	public enum TempType {
-			COLD,
-			HOT
-		}
-	
+		COLD,
+		HOT
+	}
+
 	public enum DrinkSize {
-		 SHORT,
-		 TALL,
-		 GRANDE
-	 }
-	 
+		SHORT,
+		TALL,
+		GRANDE
+	}
+
 	/**
 	 * @param itemId
 	 * @param itemName
