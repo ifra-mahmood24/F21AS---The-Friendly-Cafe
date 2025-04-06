@@ -4,18 +4,8 @@
  */
 package com.friendlycafe.pojo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.friendlycafe.dtoservice.DataService;
-
-/**
- * This class extends item class exclusively for beverages
- */
 public class Beverage extends Item {
-
-	private static final Logger beverageLogger = LoggerFactory.getLogger(DataService.class);
-	 
+ 
 	public TempType type;
 	public DrinkSize size;
 	public Boolean isRefill;
@@ -46,9 +36,4 @@ public class Beverage extends Item {
 		this.size = size;
 	}
 
-	public void refill() {
-		if (this.isRefill == true) {
-			beverageLogger.info("Refill is true");
-		}
-	}
 }
