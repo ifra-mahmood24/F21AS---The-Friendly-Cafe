@@ -67,6 +67,7 @@ public class CafeController {
 		
 		return dataService.saveAsActiveOrder(order);
 		
+	}
 	
 	public Order saveOrder(String customerMailId,  HashMap<String, Integer> orderedItems, boolean isOffered, double cost) {
 						
