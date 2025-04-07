@@ -7,6 +7,9 @@ package com.friendlycafe.pojo;
 import java.util.HashMap;
 
 
+/**
+ * This class contains about the orders
+ */
 public class Order {
 	private String orderId;
 	private String customerId;
@@ -14,7 +17,7 @@ public class Order {
 	private HashMap<String, Integer> orderedItems;
 	private boolean isDiscounted;
 	private HashMap<String, Integer> offeredItems;
-	private double cost;
+	private float cost;
 
 
 	/**
@@ -100,42 +103,6 @@ public class Order {
 	public Order() {
 		// TODO Auto-generated constructor stub
 	}
-
-/**
-	 * @param string
-	 * @param customerMailId
-	 * @param timeStamp2
-	 * @param orderedItems2
-	 * @param isOffered
-	 */
-	public Order(String orderId, String customerMailId, String timeStamp2, HashMap<String, Integer> orderedItems2,
-			boolean isOffered) {
-			this.orderId = orderId;
-			this.timeStamp = timeStamp2;
-			this.customerId = customerMailId;
-			this.isDiscounted = isOffered;
-			
-	}
-	
-/**
- * @param orderId
- * @param customerId
- * @param timeStamp
- * @param orderedItems
- * @param isDiscounted
- * @param cost
- */
-public Order(String orderId, String customerId, String timeStamp, HashMap<String, Integer> orderedItems,
-		boolean isDiscounted, double cost) {
-	super();
-	this.orderId = orderId;
-	this.customerId = customerId;
-	this.timeStamp = timeStamp;
-	this.orderedItems = orderedItems;
-	this.isDiscounted = isDiscounted;
-	this.cost = cost;
-}
-
 
 //	-------GETTERS AND SETTERS START---------
 /**
@@ -225,14 +192,14 @@ public Order(String orderId, String customerId, String timeStamp, HashMap<String
 	/**
 	 * @return the cost
 	 */
-	public double getCost() {
+	public float getCost() {
 		return cost;
 	}
 
 	/**
 	 * @param cost the cost to set
 	 */
-	public void setCost(double cost) {
+	public void setCost(float cost) {
 		this.cost = cost;
 	}
 

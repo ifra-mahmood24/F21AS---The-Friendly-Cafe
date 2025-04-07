@@ -4,16 +4,17 @@
  */
 package com.friendlycafe.pojo;
 
-import java.util.logging.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.friendlycafe.service.DataService;
+import com.friendlycafe.dtoservice.DataService;
 
 /**
  * This class extends item class exclusively for beverages
  */
 public class Beverage extends Item {
 
-	private static final Logger beverageLogger = Logger.getLogger(DataService.class.getName());
+	private static final Logger beverageLogger = LoggerFactory.getLogger(DataService.class);
 	 
 	public TempType type;
 	public DrinkSize size;
