@@ -1,5 +1,4 @@
 package com.friendlycafe.test;
-import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -11,8 +10,9 @@ import java.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.friendlycafe.controller.CafeController;
 import com.friendlycafe.daoservice.DataAccessService;
-import com.friendlycafe.dtoservice.DataService;
+import com.friendlycafe.service.DataService;
 import com.friendlycafe.exception.CustomerFoundException;
 import com.friendlycafe.exception.InvalidMailFormatException;
 import com.friendlycafe.pojo.Item;
@@ -20,6 +20,7 @@ import com.friendlycafe.pojo.Item;
 
 public class DataServiceTest {
     private DataService dataService = new DataService();
+    private CafeController cafeController = new CafeController();
     private DataAccessService daoService = new DataAccessService();
 
 
@@ -39,7 +40,7 @@ public class DataServiceTest {
         when(daoService.readJSONFile(anyString(), eq("beverageItems"))).thenReturn(new JSONArray());
         when(daoService.readJSONFile(anyString(), eq("dessertItems"))).thenReturn(new JSONArray());
         
-        ArrayList<Item> menu = dataService.getMenu();
+        ArrayList<Item> menu = cafeController.getMenu();
         assertNotNull(menu, "Menu should not be null");
         assertEquals(1, menu.size(), "Menu should contain 1 item");
         assertEquals("Burger", menu.get(0).name, "First item should be Burger");
@@ -50,7 +51,7 @@ public class DataServiceTest {
     void testGetMenu_EmptyFile() {
         Mockito.when(daoService.readJSONFile(Mockito.anyString(), Mockito.anyString())).thenReturn(new JSONArray());
 
-        List<Item> menu = dataService.getMenu();
+        List<Item> menu = cafeController.getMenu();
         assertNotNull(menu, "Menu should not be null");
         assertEquals(0, menu.size(), "Menu should be empty");
     }

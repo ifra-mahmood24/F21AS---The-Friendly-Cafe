@@ -14,8 +14,7 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.*;
 
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -23,17 +22,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.friendlycafe.dto.CustomerDTO;
 import com.friendlycafe.dto.OrderDTO;
 import com.friendlycafe.dto.ReportDTO;
-import com.friendlycafe.dtoservice.DataService;
-import com.friendlycafe.pojo.Customer;
+import com.friendlycafe.model.Customer;
 import com.friendlycafe.pojo.Order;
 import com.friendlycafe.pojo.Report;
+import com.friendlycafe.service.DataService;
 
 /**
  * 
  */
 public class DataAccessService {
 
-	private static final Logger logger = LoggerFactory.getLogger(DataService.class);
+	private static final Logger logger = Logger.getLogger(DataService.class.getName());
 
 	public JSONArray readJSONFile(String Path, String JSONkey){
 		
@@ -57,7 +56,7 @@ public class DataAccessService {
 	public void writeJSONFileForOrders(String path, ArrayList<Order> list) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            logger.info("Writing... "+list);
+            logger.info("Writing List of size ... "+list.size()+" to "+ path );
         	OrderDTO orders = new OrderDTO();
         	orders.setOrders(list);
 			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), orders);
@@ -102,11 +101,12 @@ public class DataAccessService {
 			earningForTheDay += itemTotalCost.totalCost;
 		}
 		try {
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File("src/main/resources/report_"+date+".json"),
+			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File("src/main/resources/reports/report_"+date+".json"),
 					new ReportDTO(allOrderedItems, earningForTheDay));
 		} catch (Exception e) {
 			logger.info("WRITE REPORT FAILING....");
 			e.printStackTrace();
 		}		
 	}
+	
 }
