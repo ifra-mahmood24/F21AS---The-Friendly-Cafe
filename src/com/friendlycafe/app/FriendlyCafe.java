@@ -300,13 +300,12 @@ public class FriendlyCafe {
 			double billCost = cafeController.getTotalCost(orderingItem);
 			boolean isOffered = billCost != cafeController.getDiscountedCost(billCost) ;
 
-			Order currentOrder = cafeController.saveAsActiveOrder(mailId.getText(), orderingItem, isOffered);	
+			Order currentOrder = cafeController.saveAsActiveOrder(mailId.getText(), orderingItem, isOffered, billCost);	
 			
 			// save order in queue
 			orderQueue.add(currentOrder);
 			System.out.println("ADDED TO ORDERQUEUE ");
 			System.out.println("TAKING ORDER");
-			cafeController.takeOrder(orderQueue);
 			checkoutPanel.add(processLabel);
 			checkoutPanel.remove(totalCostLabel);
 			

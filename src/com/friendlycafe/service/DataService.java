@@ -2,7 +2,7 @@
  * Author 			: prasanths 
  * Last Modified By : prasanths
  */
-package com.friendlycafe.dtoservice;
+package com.friendlycafe.service;
 
 
 import java.time.LocalDate;
@@ -27,7 +27,7 @@ import com.friendlycafe.pojo.Beverage;
 import com.friendlycafe.pojo.Beverage.DrinkSize;
 import com.friendlycafe.pojo.Beverage.TempType;
 import com.friendlycafe.pojo.Dessert;
-import com.friendlycafe.pojo.Customer;
+import com.friendlycafe.model.Customer;
 import com.friendlycafe.pojo.Item;
 import com.friendlycafe.pojo.Order;
 import com.friendlycafe.pojo.Report;

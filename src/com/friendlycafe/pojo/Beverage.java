@@ -6,7 +6,7 @@ package com.friendlycafe.pojo;
 
 import java.util.logging.*;
 
-import com.friendlycafe.dtoservice.DataService;
+import com.friendlycafe.service.DataService;
 
 /**
  * This class extends item class exclusively for beverages

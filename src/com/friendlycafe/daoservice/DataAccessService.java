@@ -22,10 +22,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.friendlycafe.dto.CustomerDTO;
 import com.friendlycafe.dto.OrderDTO;
 import com.friendlycafe.dto.ReportDTO;
-import com.friendlycafe.dtoservice.DataService;
-import com.friendlycafe.pojo.Customer;
+import com.friendlycafe.model.Customer;
 import com.friendlycafe.pojo.Order;
 import com.friendlycafe.pojo.Report;
+import com.friendlycafe.service.DataService;
 
 /**
  * 
@@ -56,7 +56,7 @@ public class DataAccessService {
 	public void writeJSONFileForOrders(String path, ArrayList<Order> list) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            logger.info("Writing... "+list);
+            logger.info("Writing List of size ... "+list.size()+" to "+ path );
         	OrderDTO orders = new OrderDTO();
         	orders.setOrders(list);
 			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), orders);
@@ -108,4 +108,5 @@ public class DataAccessService {
 			e.printStackTrace();
 		}		
 	}
+	
 }

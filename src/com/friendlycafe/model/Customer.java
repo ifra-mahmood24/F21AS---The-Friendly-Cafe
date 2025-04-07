@@ -6,7 +6,6 @@ import com.friendlycafe.pojo.Order;
 public class Customer {
     private String mailId;
     private String name;
-    private boolean isVIP = false;
     private Order order;
     
     /**
@@ -16,7 +15,6 @@ public class Customer {
     public Customer(String customerName, String mailId, Boolean isVIP) {
         this.name = customerName;
         this.mailId = mailId;
-        this.isVIP = isVIP;
     }
     
     public Customer(String customerName, String mailId) {
@@ -58,21 +56,6 @@ public class Customer {
         this.mailId = mailId;
     }
     
-    /**
-     * Check if customer is VIP
-     * @return true if VIP
-     */
-    public boolean isVIP() {
-        return isVIP;
-    }
-    
-    /**
-     * Set VIP status
-     * @param isVIP the VIP status to set
-     */
-    public void setVIP(boolean isVIP) {
-        this.isVIP = isVIP;
-    }
     
     /**
      * Get customer's order
@@ -90,8 +73,4 @@ public class Customer {
         this.order = order;
     }
     
-    @Override
-    public String toString() {
-        return name + " (" + mailId + ")" + (isVIP ? " [VIP]" : "");
-    }
 }

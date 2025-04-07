@@ -8,9 +8,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.concurrent.ArrayBlockingQueue;
 
-import com.friendlycafe.dtoservice.CafeService;
+import com.friendlycafe.service.CafeService;
 import com.friendlycafe.service.DataService;
 import com.friendlycafe.exception.CustomerFoundException;
 import com.friendlycafe.exception.InvalidMailFormatException;

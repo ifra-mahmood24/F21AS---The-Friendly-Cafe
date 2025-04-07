@@ -1,5 +1,4 @@
 package com.friendlycafe.test;
-import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -13,7 +12,7 @@ import org.json.JSONObject;
 
 import com.friendlycafe.controller.CafeController;
 import com.friendlycafe.daoservice.DataAccessService;
-import com.friendlycafe.dtoservice.DataService;
+import com.friendlycafe.service.DataService;
 import com.friendlycafe.exception.CustomerFoundException;
 import com.friendlycafe.exception.InvalidMailFormatException;
 import com.friendlycafe.pojo.Item;
