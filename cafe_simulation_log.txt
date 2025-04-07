@@ -1,0 +1,27 @@
+2025-04-07 18:52:20 - Log service initialized
+2025-04-07 18:52:20 - Loaded 0 existing orders
+2025-04-07 18:52:21 - Simulation started with 2 staff members
+2025-04-07 18:52:21 - All existing orders have been added to the queue
+2025-04-07 18:52:24 - Menui Items size : 46
+2025-04-07 18:52:24 - Successfully loaded 46 menu items
+2025-04-07 18:52:24 - Sample item 0: F001 - Caesar Salad
+2025-04-07 18:52:24 - Sample item 1: F002 - Cheese Bagel
+2025-04-07 18:52:24 - Sample item 2: F003 - Chicken Caesar Salad
+2025-04-07 18:52:24 - Displaying 9 items
+2025-04-07 18:52:26 - Added Cheese Bagel to cart
+2025-04-07 18:52:27 - Added Caesar Salad to cart
+2025-04-07 18:52:35 - Saved new customer: rtbfv (rynbtgevf@fsd.com)
+2025-04-07 18:52:35 - Bill cost calculated: 7.199999809265137
+2025-04-07 18:52:35 - Discounted cost calculated: 7.199999809265137
+2025-04-07 18:52:35 - Saved as active order ORD-1587578462 to database
+2025-04-07 18:52:35 - Order saved successfully
+2025-04-07 18:52:35 - Bill screen updated successfully
+2025-04-07 18:52:35 - Bill screen updated successfully
+2025-04-07 18:52:35 - Order completed by rtbfv (rynbtgevf@fsd.com) for £7.20
+2025-04-07 18:52:36 - Simulation started with 2 staff members
+2025-04-07 18:52:36 - All existing orders have been added to the queue
+2025-04-07 18:52:36 - Loaded 1 existing orders
+2025-04-07 18:52:36 - Incoming Customer rynbtgevf@fsd.com added to queue with order ORD-1587578462
+2025-04-07 18:52:36 - Staff 1 is now processing order ORD-1587578462 for customer rynbtgevf@fsd.com
+2025-04-07 18:52:46 - Staff 1 has completed order ORD-1587578462 for customer rynbtgevf@fsd.com
+2025-04-07 18:52:46 - Saved order ORD-1587578462 to database

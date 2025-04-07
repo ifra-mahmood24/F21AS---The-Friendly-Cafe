@@ -18,7 +18,6 @@ public class CafeSimulation {
     private static final Color MEDIUM_RED = new Color(200, 0, 0);
     private static final Color LIGHT_RED = new Color(255, 153, 153);
     private static final Color VERY_LIGHT_RED = new Color(255, 204, 204);
-    private static final Color ACCENT_RED = new Color(220, 20, 60);
 
 	private BlockingQueue<Order> orderQueue = new LinkedBlockingQueue<>();
 	private List<StaffMember> staffMembers = new ArrayList<>();
@@ -308,7 +307,6 @@ public class CafeSimulation {
 			}
 		});
 
-		// Clear panels
 		queuePanel.removeAll();
 		queuePanel.revalidate();
 		queuePanel.repaint();
@@ -317,25 +315,19 @@ public class CafeSimulation {
 		staffPanel.revalidate();
 		staffPanel.repaint();
 
-		// Generate final report
 		dataService.generateReport();
 		System.exit(0);
 	}
 
-	/**
-	 * Adjust the number of staff members during simulation
-	 */
 	private void adjustStaffCount() {
 		int currentCount = staffMembers.size();
 
 		if (numberOfStaff > currentCount) {
-			// Add more staff members
 			for (int i = currentCount; i < numberOfStaff; i++) {
 				StaffMember staff = new StaffMember("Staff " + (i + 1));
 				staffMembers.add(staff);
 				executor.submit(staff);
 
-				// Add staff panel to UI
 				JPanel staffMemberPanel = createStaffPanel(staff);
 				staffPanel.add(staffMemberPanel);
 				staffPanel.revalidate();
@@ -344,12 +336,10 @@ public class CafeSimulation {
 
 			LogService.getInstance().log("Added " + (numberOfStaff - currentCount) + " new staff members");
 		} else if (numberOfStaff < currentCount) {
-			// Remove staff members (they will complete their current task first)
 			for (int i = currentCount - 1; i >= numberOfStaff; i--) {
 				StaffMember staff = staffMembers.remove(i);
 				staff.terminate();
 
-				// Remove staff panel from UI
 				staffPanel.remove(i);
 				staffPanel.revalidate();
 				staffPanel.repaint();
@@ -359,9 +349,7 @@ public class CafeSimulation {
 		}
 	}
 
-	/**
-	 * Create a panel to display an order in the queue
-	 */
+
 	private JPanel createOrderPanel(Order order) {
 		JPanel panel = new JPanel();
 		panel.setBackground(VERY_LIGHT_RED);
@@ -381,9 +369,7 @@ public class CafeSimulation {
 		return panel;
 	}
 
-	/**
-	 * Create a panel to display a staff member
-	 */
+
 	private JPanel createStaffPanel(StaffMember staff) {
 		JPanel panel = new JPanel();
 		panel.setBackground(VERY_LIGHT_RED);
@@ -404,9 +390,7 @@ public class CafeSimulation {
 		return panel;
 	}
 
-	/**
-	 * Class representing a staff member that processes orders
-	 */
+
 	private class StaffMember implements Runnable {
 		private String name;
 		private String status = "Free";
@@ -446,12 +430,10 @@ public class CafeSimulation {
 
 			while (!terminated && simulationRunning) {
 				try {
-					// Try to take an order from the queue (waiting up to 1 second)
 					currentOrder = orderQueue.poll(1, TimeUnit.SECONDS);
 
 					if (currentOrder != null) {
 						final Order orderToRemove = currentOrder;
-						// Update status to busy
 						status = "Busy";
 						updateLabels();
 
@@ -460,17 +442,14 @@ public class CafeSimulation {
 								+ " for customer " + currentOrder.getCustomerId();
 						LogService.getInstance().log(message);
 
-						// Process the order (simulate with a delay)
 						Thread.sleep(processingTimeInSeconds * 1000);
 
-						// Order is processed
 						String completionMessage = name + " has completed order " + currentOrder.getOrderId()
 								+ " for customer " + currentOrder.getCustomerId();
 						LogService.getInstance().log(completionMessage);
 
 						// Remove the order from the queue panel
 						SwingUtilities.invokeLater(() -> {
-							// Find and remove the order panel
 							for (Component comp : queuePanel.getComponents()) {
 								if (comp instanceof JPanel) {
 									JPanel panel = (JPanel) comp;
@@ -479,7 +458,6 @@ public class CafeSimulation {
 											JLabel label = (JLabel) child;
 											if (label.getText().contains(orderToRemove.getOrderId())) {
 												queuePanel.remove(panel);
-												// remove order from active orders and add it to orders
 												dataService.removeFromActiveOrder(orderToRemove);
 												dataService.saveOrder(orderToRemove);
 												queuePanel.revalidate();
@@ -491,7 +469,6 @@ public class CafeSimulation {
 								}
 							}
 						});
-						// Reset status and current order
 						currentOrder = null;
 						status = "Free";
 						updateLabels();
@@ -524,7 +501,6 @@ public class CafeSimulation {
 	}
 
 	public static void main(String[] args) {
-		// Set the look and feel to the system default
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {

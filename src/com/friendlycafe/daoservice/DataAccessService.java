@@ -27,9 +27,6 @@ import com.friendlycafe.pojo.Order;
 import com.friendlycafe.pojo.Report;
 import com.friendlycafe.service.DataService;
 
-/**
- * 
- */
 public class DataAccessService {
 
 	private static final Logger logger = Logger.getLogger(DataService.class.getName());
